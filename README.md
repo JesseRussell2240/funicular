@@ -5,8 +5,12 @@ Selfdriving R-pi code
 
 
 
-Instilation instructions
+Camera Unit Testing instruction
 
-install pi camera via
-pip install picamera
-pip install opencv-python
+install pi camera and openCV
+pip install picamera opencv-python
+
+run unit testing code
+python test_camera_module.py
+
+after this is running you should see a window with a live camera feed. Type q to exit.
