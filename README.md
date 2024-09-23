@@ -14,3 +14,9 @@ run unit testing code
 python test_camera_module.py
 
 after this is running you should see a window with a live camera feed. Type q to exit.
+
+
+Preception unit testing instruction
+
+pip install opencv-python numpy
+
