@@ -4,7 +4,7 @@ import cv2
 import time
 from camera_setup import CameraSetup
 from capture_frames import FrameCapture
-from perception.color_detection import ColorDetection
+from Perception.color_detection import ColorDetection
 from queue import Queue, Empty
 
 def main():
