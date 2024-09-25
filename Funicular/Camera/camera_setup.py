@@ -1,14 +1,37 @@
 # camera_setup.py
 
 import logging
-from picamera import PiCamera
+import sys
 from time import sleep
+
+# Check if running on Raspberry Pi or Windows
+IS_PI = sys.platform.startswith('linux')
+
+if IS_PI:
+    from picamera import PiCamera
+else:
+    # Mock PiCamera for testing on non-Pi systems
+    class PiCamera:
+        def __init__(self):
+            self.resolution = (640, 480)
+            self.framerate = 30
+            self.iso = 100
+
+        def start_preview(self):
+            print("Starting preview (mock)")
+
+        def stop_preview(self):
+            print("Stopping preview (mock)")
+
+        def capture(self, output):
+            print(f"Capturing image to {output} (mock)")
+
 
 class CameraSetup:
     def __init__(self, resolution=(640, 480), framerate=30):
         """
         Initialize the camera with specified resolution and frame rate.
-        
+
         Args:
             resolution (tuple): The desired resolution (width, height).
             framerate (int): The desired frame rate.
@@ -23,7 +46,7 @@ class CameraSetup:
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
-        
+
         self.initialize_camera()
 
     def initialize_camera(self):
@@ -46,3 +69,11 @@ class CameraSetup:
             self.logger.error("Camera not initialized.")
             raise ValueError("Camera not initialized.")
         return self.camera
+
+
+# Example usage:
+if __name__ == "__main__":
+    camera_setup = CameraSetup()
+    camera = camera_setup.get_camera()
+    # For Pi: camera.start_preview(), camera.capture(), etc.
+    # For Windows testing: Mock outputs will print instead
