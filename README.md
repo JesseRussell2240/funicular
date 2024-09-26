@@ -13,6 +13,12 @@ Selfdriving R-pi code
    -When prompted for the password, enter the Rpis password you set when configuring Ex **"rpi_password"**
    -SSH should now be established
 
+**Installing OpenCV in Terminal on Rpi**
+1. In Terminal **"pip install opencv-python --break-system-package"**
+
+**Installing PiCamera in Terminal on Rpi**
+1. In Terminal **"pip install picamera --break-system-package"**
+
 
 **Camera Unit Testing instructions**
 **this needs confirming**
