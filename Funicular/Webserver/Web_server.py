@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
 import socket
-#import cv2  # Comment this out if it's related to camera functionality
+import cv2  # Comment this out if it's related to camera functionality
 
 app = Flask(__name__)
 
 # Commented out for testing without camera
-#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
