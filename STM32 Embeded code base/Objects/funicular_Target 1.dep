@@ -1,0 +1,4 @@
+Dependencies for Project 'funicular', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 6210000::V6.21::ARMCLANG
+F (.\UART.c)(0x66FC319E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O0 -ffunction-sections -Weverything -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-IC:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include-D__UVISION_VERSION="539" -DSTM32F303xE-o ./objects/uart.o -MD)
+F (.\UART.h)(0x66FC3188)()
