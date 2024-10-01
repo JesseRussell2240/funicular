@@ -1,51 +1,33 @@
-from flask import Flask, render_template, Response, request
-import cv2
+from flask import Flask, render_template, request
 import socket
+#import cv2  # Comment this out if it's related to camera functionality
 
 app = Flask(__name__)
 
-# Camera setup (use OpenCV for capturing video)
-camera = cv2.VideoCapture(0)  # Change index if necessary for your camera
+# Commented out for testing without camera
+#cap = cv2.VideoCapture(0)
 
-# Socket configuration for sending control commands
-CONTROL_SERVER_HOST = 'localhost'  # Adjust for the control server IP
-CONTROL_SERVER_PORT = 5001  # Port for sending control commands
-
-def send_control_command(command):
-    """Send a control command to the device via socket."""
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((CONTROL_SERVER_HOST, CONTROL_SERVER_PORT))
-        sock.sendall(command.encode())
-
-def generate_frames():
-    """Generator function to yield camera frames as a video stream."""
-    while True:
-        success, frame = camera.read()  # Capture frame-by-frame
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    """Render the main page with control buttons and video feed."""
-    return render_template('index.html')
+    result = ''
+    if request.method == 'POST':
+        command = request.form['command']
 
-@app.route('/video_feed')
-def video_feed():
-    """Route to serve video feed."""
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        # You can replace this part with whatever action you're testing
+        result = execute_command(command)  # Function to execute command and return result
 
-@app.route('/control', methods=['POST'])
-def control():
-    """Handle movement control commands from the web interface."""
-    command = request.form.get('command')
-    if command:
-        send_control_command(command)
-    return '', 204
+    return render_template('index.html', result=result)
+
+# Example command execution function
+def execute_command(command):
+    # Perform socket communication or another action
+    if command == "forward":
+        return "Moving forward"
+    elif command == "back":
+        return "Moving back"
+    else:
+        return "Unknown command"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    # Run the Flask web server on port 8080
+    app.run(debug=True, host='0.0.0.0', port=8080)
