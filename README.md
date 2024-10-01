@@ -34,3 +34,7 @@ After this is running you should see a window with a live camera feed.Type 'q' t
 
 2. run unit testing code - python test_perception_module.py
 preception also has a main to test preception and cameras joint integration. Ensure camera module is successfull prior to moving on to preception.
+
+This is to install flask and other for R-Pi server hosting website to control and recive video remotly
+pip install flask flask-socketio opencv-python
+
