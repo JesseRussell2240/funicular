@@ -1,114 +1,51 @@
-# include <sys/types.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-# include <sys/socket.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <signal.h>
-# include <sys/wait.h>
+from flask import Flask, render_template, Response, request
+import cv2
+import socket
 
-# define PORT 5000
-# define BUFFER_SIZE 1024
+app = Flask(__name__)
 
-void
-handle_client(int
-client_socket) {
-    char
-buffer[BUFFER_SIZE];
-int
-len;
+# Camera setup (use OpenCV for capturing video)
+camera = cv2.VideoCapture(0)  # Change index if necessary for your camera
 
-// Read
-command
-from client
-    len = read(client_socket, buffer, sizeof(buffer) - 1);
-if (len > 0)
-{
-    buffer[len] = '\0'; // Null - terminate
-the
-string
-printf("Received command: %s\n", buffer);
+# Socket configuration for sending control commands
+CONTROL_SERVER_HOST = 'localhost'  # Adjust for the control server IP
+CONTROL_SERVER_PORT = 5001  # Port for sending control commands
 
-// Execute
-the
-command and send
-the
-output
-back
-FILE * fp = popen(buffer, "r");
-if (fp == NULL)
-{
-    perror("popen");
-return;
-}
+def send_control_command(command):
+    """Send a control command to the device via socket."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.connect((CONTROL_SERVER_HOST, CONTROL_SERVER_PORT))
+        sock.sendall(command.encode())
 
-while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-write(client_socket, buffer, strlen(buffer));
-}
+def generate_frames():
+    """Generator function to yield camera frames as a video stream."""
+    while True:
+        success, frame = camera.read()  # Capture frame-by-frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-pclose(fp);
-}
+@app.route('/')
+def index():
+    """Render the main page with control buttons and video feed."""
+    return render_template('index.html')
 
-close(client_socket);
-}
+@app.route('/video_feed')
+def video_feed():
+    """Route to serve video feed."""
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-int
-main()
-{
-    int
-server_socket, client_socket;
-struct
-sockaddr_in
-server_addr, client_addr;
-socklen_t
-client_len = sizeof(client_addr);
+@app.route('/control', methods=['POST'])
+def control():
+    """Handle movement control commands from the web interface."""
+    command = request.form.get('command')
+    if command:
+        send_control_command(command)
+    return '', 204
 
-// Create
-a
-socket
-server_socket = socket(AF_INET, SOCK_STREAM, 0);
-if (server_socket < 0)
-{
-perror("socket");
-exit(1);
-}
-
-// Prepare
-the
-sockaddr_in
-structure
-memset( & server_addr, 0, sizeof(server_addr));
-server_addr.sin_family = AF_INET;
-server_addr.sin_addr.s_addr = INADDR_ANY;
-server_addr.sin_port = htons(PORT);
-
-// Bind
-the
-socket
-if (bind(server_socket, (struct sockaddr *) & server_addr, sizeof(server_addr)) < 0)
-{
-perror("bind");
-close(server_socket);
-exit(1);
-}
-
-// Listen
-for incoming connections
-listen(server_socket, 5);
-printf("Server listening on port %d\n", PORT);
-
-while (1) {
-// Accept a new connection
-client_socket = accept(server_socket, (struct sockaddr * ) & client_addr, & client_len);
-if (client_socket < 0) {
-perror("accept");
-continue;
-}
-handle_client(client_socket);
-}
-
-close(server_socket);
-return 0;
-}
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
