@@ -385,21 +385,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>system_stm32f3xx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>C:\Users\hayde\Downloads\system_stm32f3xx.c</FilePath>
-            </File>
-            <File>
-              <FileName>SysClock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>C:\Users\hayde\Downloads\SysClock.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_stm32f303xe.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>C:\Users\hayde\Downloads\startup_stm32f303xe.s</FilePath>
-            </File>
-            <File>
               <FileName>utility.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\utility.c</FilePath>
@@ -508,6 +493,21 @@
               <FileName>UltraSonic.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\UltraSonic.h</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f303xe.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\funicularKeil\startup_stm32f303xe.s</FilePath>
+            </File>
+            <File>
+              <FileName>SysClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\funicularKeil\SysClock.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_stm32f3xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\funicularKeil\system_stm32f3xx.c</FilePath>
             </File>
           </Files>
         </Group>

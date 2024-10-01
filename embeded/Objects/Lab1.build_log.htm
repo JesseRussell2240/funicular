@@ -1,0 +1,582 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.39.0.0
+Copyright (C) 2023 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Hayden Foster, conestoga, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.39.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.21
+Assembler:       Armasm.exe V6.21
+Linker/Locator:  ArmLink.exe V6.21
+Library Manager: ArmAr.exe V6.21
+Hex Converter:   FromElf.exe V6.21
+CPU DLL:         SARMCM3.DLL V5.39.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.2.0.0
+Dialog DLL:      TCM.DLL V1.56.4.0
+ 
+<h2>Project:</h2>
+C:\Users\hayde\OneDrive - Conestoga College\Projects 5\funicular\embeded\funicular.uvprojx
+Project File Date:  10/01/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Target 1'
+main.c(6): warning: unused variable 'cmd' [-Wunused-variable]
+    6 | static char cmd[16];
+      |             ^~~
+1 warning generated.
+compiling main.c...
+UART.c(149): warning: format string is not a string literal [-Wformat-nonliteral]
+  149 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
+      |                                        ^~~
+UART.c(82): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   82 |             rxBuffer[rxWriteIndex] = receivedChar;
+      |             ^~~~~~~~
+UART.c(90): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   90 |             USART2->TDR = txBuffer[txReadIndex];
+      |                           ^~~~~~~~
+UART.c(108): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  108 |         UARTputc(*str++);
+      |                   ^~~
+UART.c(133): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  133 |             buffer[index] = '\0'; // Null-terminate the string
+      |             ^~~~~~
+UART.c(138): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  138 |             buffer[index++] = receivedChar;
+      |             ^~~~~~
+6 warnings generated.
+compiling UART.c...
+Encoder.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   21 |          GPIO_AFR_SET(A, 0, 1);
+      |          ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(6): note: expanded from here
+    6 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+Encoder.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   21 |          GPIO_AFR_SET(A, 0, 1);
+      |          ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(6): note: expanded from here
+    6 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+Encoder.c(25): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   25 |          GPIO_AFR_SET(A, 1, 1);
+      |          ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(9): note: expanded from here
+    9 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+Encoder.c(25): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   25 |          GPIO_AFR_SET(A, 1, 1);
+      |          ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(9): note: expanded from here
+    9 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+4 warnings generated.
+compiling Encoder.c...
+keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |       ^
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~~~~~~~~~
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~
+5 warnings generated.
+compiling keypad.c...
+compiling utility.c...
+DriveMotor_Briefing.c(531): warning: variable 'i' set but not used [-Wunused-but-set-variable]
+  531 |                 for (uint16_t i = 0; currentDutyCycle !=dutyCycle; i++){
+      |                               ^
+DriveMotor_Briefing.c(542): warning: variable 'i' set but not used [-Wunused-but-set-variable]
+  542 |     for (uint16_t i = 0; currentDutyCycle != dutyCycle; i++) {
+      |                   ^
+DriveMotor_Briefing.c(90): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   90 |                 GPIO_AFRH(C,2,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(24): note: expanded from here
+   24 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+DriveMotor_Briefing.c(90): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   90 |                 GPIO_AFRH(C,2,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(24): note: expanded from here
+   24 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+DriveMotor_Briefing.c(91): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   91 |                 GPIO_AFRH(C,3,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(25): note: expanded from here
+   25 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+DriveMotor_Briefing.c(91): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   91 |                 GPIO_AFRH(C,3,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(25): note: expanded from here
+   25 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+DriveMotor_Briefing.c(141): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  141 |                 GPIO_AFRH(C,4,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(44): note: expanded from here
+   44 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+DriveMotor_Briefing.c(141): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  141 |                 GPIO_AFRH(C,4,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(44): note: expanded from here
+   44 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+DriveMotor_Briefing.c(142): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  142 |                 GPIO_AFRH(C,1,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(45): note: expanded from here
+   45 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+DriveMotor_Briefing.c(142): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  142 |                 GPIO_AFRH(C,1,4UL);
+      |                 ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(45): note: expanded from here
+   45 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+10 warnings generated.
+compiling DriveMotor_Briefing.c...
+lcd.c(9): warning: In file included from...
+./lcd.h(12): warning: non-portable path to file '"utility.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+   12 | #include "Utility.h"
+      |          ^~~~~~~~~~~
+      |          "utility.h"
+lcd.c(63): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+   63 |         LCD_BUS(0x03UL);
+      |         ^~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(69): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+   69 |         LCD_BUS(0x03UL);
+      |         ^~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(75): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+   75 |         LCD_BUS(0x03UL);
+      |         ^~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(80): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+   80 |         LCD_BUS(0x02UL);
+      |         ^~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(124): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+  124 |         LCD_BUS(HI_NYBBLE(cmd));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(129): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+  129 |         LCD_BUS(LO_NYBBLE(cmd));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(142): warning: implicit conversion changes signedness: 'int' to 'unsigned long' [-Wsign-conversion]
+  142 |         LCD_BUS(HI_NYBBLE(data));
+      |         ~~~~~~~~^~~~~~~~~~~~~~~~
+./Utility.h(62): note: expanded from macro 'HI_NYBBLE'
+   62 | #define HI_NYBBLE(value) ((value >> 4UL) & 0x0FUL)
+      |                                  ^       ~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                                                  ^~~~~
+lcd.c(142): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+  142 |         LCD_BUS(HI_NYBBLE(data));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(146): warning: implicit conversion changes signedness: 'int' to 'unsigned long' [-Wsign-conversion]
+  146 |         LCD_BUS(LO_NYBBLE(data));
+      |                 ~~~~~~~~~~^~~~~
+./Utility.h(61): note: expanded from macro 'LO_NYBBLE'
+   61 | #define LO_NYBBLE(value) ((value) & 0x0FUL)
+      |                            ^~~~~  ~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                                                            ^~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                                                  ^~~~~
+lcd.c(146): warning: implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned int') [-Wsign-conversion]
+  146 |         LCD_BUS(LO_NYBBLE(data));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+./lcd.h(76): note: expanded from macro 'LCD_BUS'
+   76 | #define LCD_BUS(value)  FORCE_BITS(LCD_PORT, LCD_BUS_BIT, (value) << LCD_BUS_BIT_POS)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./Utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                               ~  ^~~~~~~
+lcd.c(181): warning: format string is not a string literal [-Wformat-nonliteral]
+  181 |         (void)vsnprintf(buffer, MAX_LCD_BUFSIZ, str, args);
+      |                                                 ^~~
+lcd.c(170): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  170 |                 LCDputc(*str++);
+      |                          ^~~
+13 warnings generated.
+compiling lcd.c...
+compiling PushButton.c...
+RCServoSkeleton.c(4): warning: In file included from...
+./RCServo.h(15): warning: no newline at end of file [-Wnewline-eof]
+   15 | #endif
+      |       ^
+RCServoSkeleton.c(131): warning: variable 'i' set but not used [-Wunused-but-set-variable]
+  131 |                 for (int16_t i = 0; currentAngle != 0; i+=stepDown){
+      |                              ^
+RCServoSkeleton.c(139): warning: variable 'i' set but not used [-Wunused-but-set-variable]
+  139 |                 for (int16_t i = 0; currentAngle != 0; i++){
+      |                              ^
+RCServoSkeleton.c(18): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   18 |         GPIO_AFRH(B,7,1UL);
+      |         ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(5): note: expanded from here
+    5 | GPIOB
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(980): note: expanded from macro 'GPIOB'
+  980 | #define GPIOB               ((GPIO_TypeDef *) GPIOB_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+RCServoSkeleton.c(18): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   18 |         GPIO_AFRH(B,7,1UL);
+      |         ^~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(5): note: expanded from here
+    5 | GPIOB
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(980): note: expanded from macro 'GPIOB'
+  980 | #define GPIOB               ((GPIO_TypeDef *) GPIOB_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+5 warnings generated.
+compiling RCServoSkeleton.c...
+stepper.c(3): warning: In file included from...
+./stepper.h(13): warning: no newline at end of file [-Wnewline-eof]
+   13 | #endif
+      |       ^
+stepper.c(145): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  145 |            UARTprintf("Pattern: %d\n", HSpattern[count]);
+      |                                        ^~~~~~~~~
+2 warnings generated.
+compiling stepper.c...
+assembling startup_stm32f303xe.s...
+UltraSonic.c(16): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   16 |     GPIO_AFRH(A, 4, 1UL); // TIM16 CH1
+      |     ^~~~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(5): note: expanded from here
+    5 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+UltraSonic.c(16): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   16 |     GPIO_AFRH(A, 4, 1UL); // TIM16 CH1
+      |     ^~~~~~~~~~~~~~~~~~~~
+./utility.h(47): note: expanded from macro 'GPIO_AFRH'
+   47 | #define GPIO_AFRH(port,pin,type) FORCE_BITS( GPIOx(port) -> AFR[1], (0xFUL << ( (pin) * 4)), ((type) << ( (pin) * 4)) )
+      |                                  ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(5): note: expanded from here
+    5 | GPIOA
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(979): note: expanded from macro 'GPIOA'
+  979 | #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+UltraSonic.c(61): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   61 |     GPIO_AFR_SET(C, 7, 2); // TIM3 CH2
+      |     ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(11): note: expanded from here
+   11 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |            ^~~~
+UltraSonic.c(61): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   61 |     GPIO_AFR_SET(C, 7, 2); // TIM3 CH2
+      |     ^~~~~~~~~~~~~~~~~~~~~
+./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
+   48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
+      |                                       ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./utility.h(14): note: expanded from macro 'GPIOx'
+   14 | #define GPIOx( port ) GPIO ## port
+      |                       ^
+<scratch space>(11): note: expanded from here
+   11 | GPIOC
+      | ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f303xe.h(981): note: expanded from macro 'GPIOC'
+  981 | #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+      |                             ^
+./utility.h(26): note: expanded from macro 'FORCE_BITS'
+   26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
+      |                         ^~~~
+4 warnings generated.
+compiling UltraSonic.c...
+compiling SysClock.c...
+../../funicularKeil/system_stm32f3xx.c(86): warning: In file included from...
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(11): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   11 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(12): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   12 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+../../funicularKeil/system_stm32f3xx.c(296): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  296 |   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+      |         ^~~~~~~~~~~~~
+3 warnings generated.
+compiling system_stm32f3xx.c...
+linking...
+Program Size: Code=8608 RO-data=1020 RW-data=4 ZI-data=1792  
+".\Objects\Lab1.axf" - 0 Error(s), 53 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM::CMSIS@5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F3xx_DFP.2.2.2.pack
+                Keil::STM32F3xx_DFP@2.2.2
+                STMicroelectronics STM32F3 Series Device Support and Examples
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_Target_1
+  C:/Users/hayde/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@5.6.0
+Build Time Elapsed:  00:00:06
+</pre>
+</body>
+</html>
