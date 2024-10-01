@@ -1,177 +1,24 @@
-To finish the webserver code based on the sample C client and server programs you provided, I will walk you through how to build the client-server model using Flask (for the webserver) and socket communication in Python.
-
-### **Client-Server Model Overview**
-
-- **Client**: The client sends requests (like commands) to the server. It connects to the server via a socket, sends a command (e.g., `date`, `who`, `df`), and displays the result from the server.
-- **Server**: The server listens on a specific port, accepts requests, processes the command, and sends back the result to the client.
-
-In the context of building a Flask webserver to simulate this setup, we will:
-1. Implement the web server using **Flask** that acts like the client.
-2. Implement the socket server in Python, similar to your C-based example.
-3. Handle commands (e.g., `date`, `who`, `df`) and return results.
-
----
-
-### **1. Python-Based Socket Server**
-
-We'll first rewrite the C socket server in Python. This will handle requests for commands (`date`, `who`, `df`) and return the command's output.
-
-#### **`socket_server.py`** (Equivalent to `server.c`)
-
-```python
-import socket
-import subprocess
-
-# Define the server address and port
-HOST = '0.0.0.0'  # Listen on all available interfaces
-PORT = 5000        # Use port 5000 like in the C example
-
-def handle_client(client_socket):
-    try:
-        # Receive the command from the client
-        command = client_socket.recv(1024).decode()
-        print(f"Received command: {command}")
-
-        # Execute the command using subprocess
-        if command == "date":
-            result = subprocess.getoutput("date")
-        elif command == "who":
-            result = subprocess.getoutput("who")
-        elif command == "df":
-            result = subprocess.getoutput("df")
-        else:
-            result = "Invalid command"
-
-        # Send the result back to the client
-        client_socket.send(result.encode())
-
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
-        client_socket.close()
-
-def main():
-    # Create a socket object
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((HOST, PORT))
-    server_socket.listen(5)
-    print(f"Server listening on {HOST}:{PORT}")
-
-    while True:
-        # Accept incoming client connections
-        client_socket, addr = server_socket.accept()
-        print(f"Accepted connection from {addr}")
-
-        # Handle the client's request
-        handle_client(client_socket)
-
-if __name__ == "__main__":
-    main()
-```
-
-This Python socket server:
-- Listens on port 5000.
-- Accepts client connections and processes commands (`date`, `who`, `df`).
-- Executes the command using `subprocess.getoutput()` and sends the output back to the client.
-
----
-
-### **2. Flask Web Client**
-
-The web client will use Flask to provide a simple webpage where a user can input commands. This client will connect to the socket server, send the command, and display the result on the webpage.
-
-#### **`web_client.py`** (Using Flask)
-
-```python
-from flask import Flask, render_template, request
-import socket
-
-app = Flask(__name__)
-
-# Server details (same as socket server)
-SERVER_HOST = 'localhost'
-SERVER_PORT = 5000
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    result = ''
-    if request.method == 'POST':
-        # Get the command from the form
-        command = request.form['command']
-
-        # Create a socket to connect to the server
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((SERVER_HOST, SERVER_PORT))
-
-        # Send the command to the server
-        client_socket.send(command.encode())
-
-        # Get the result from the server
-        result = client_socket.recv(4096).decode()
-
-        # Close the socket
-        client_socket.close()
-
-    return render_template('index.html', result=result)
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8080)
-```
-
-This Flask app:
-- Serves a simple web page where users can input a command (`date`, `who`, `df`).
-- Connects to the socket server to send the command and receive the result.
-- Displays the result on the webpage.
-
-#### **`templates/index.html`**
-
-Create an HTML form where the user can input the command:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Client</title>
+    <title>Device Control</title>
 </head>
 <body>
-    <h1>Command Input</h1>
-    <form method="POST">
-        <label for="command">Enter Command:</label>
-        <input type="text" id="command" name="command" required>
-        <button type="submit">Send Command</button>
-    </form>
+    <h1>Device Control with Live Camera Feed</h1>
 
-    {% if result %}
-    <h2>Result</h2>
-    <pre>{{ result }}</pre>
-    {% endif %}
+    <div>
+        <img src="{{ url_for('video_feed') }}" width="640" height="480" />
+    </div>
+
+    <div>
+        <form action="/control" method="POST">
+            <button name="command" value="forward">Forward</button>
+            <button name="command" value="back">Back</button>
+            <button name="command" value="left">Left</button>
+            <button name="command" value="right">Right</button>
+        </form>
+    </div>
 </body>
 </html>
-```
-
-### **3. Running the Client and Server**
-
-1. **Run the Socket Server:**
-   ```bash
-   python socket_server.py
-   ```
-
-2. **Run the Flask Web Client:**
-   ```bash
-   python web_client.py
-   ```
-
-3. **Access the Web Interface:**
-   Open a browser and go to `http://localhost:8080`. You can input commands (`date`, `who`, `df`) into the form and see the results on the page.
-
-### **4. Testing the System**
-
-- When you input a command like `date`, the Flask app (acting as the client) sends the command to the socket server.
-- The socket server receives the command, executes it, and returns the result to the client.
-- The client displays the result on the web page.
-
-### **Conclusion**
-
-This setup effectively completes your webserver, allowing a web client to send commands to a socket server, execute them, and display the results. If you need further assistance, feel free to ask!
