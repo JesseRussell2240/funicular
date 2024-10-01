@@ -27,31 +27,23 @@ Project File Date:  10/01/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-main.c(6): warning: unused variable 'cmd' [-Wunused-variable]
-    6 | static char cmd[16];
-      |             ^~~
-1 warning generated.
-compiling main.c...
-UART.c(149): warning: format string is not a string literal [-Wformat-nonliteral]
-  149 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
-      |                                        ^~~
-UART.c(82): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   82 |             rxBuffer[rxWriteIndex] = receivedChar;
-      |             ^~~~~~~~
-UART.c(90): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   90 |             USART2->TDR = txBuffer[txReadIndex];
-      |                           ^~~~~~~~
-UART.c(108): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
-  108 |         UARTputc(*str++);
-      |                   ^~~
-UART.c(133): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  133 |             buffer[index] = '\0'; // Null-terminate the string
-      |             ^~~~~~
-UART.c(138): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  138 |             buffer[index++] = receivedChar;
-      |             ^~~~~~
-6 warnings generated.
-compiling UART.c...
+keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |       ^
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~~~~~~~~~
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~
+5 warnings generated.
+compiling keypad.c...
 compiling utility.c...
 lcd.c(9): warning: In file included from...
 ./lcd.h(12): warning: non-portable path to file '"utility.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
@@ -162,6 +154,31 @@ lcd.c(170): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
       |                          ^~~
 13 warnings generated.
 compiling lcd.c...
+main.c(6): warning: unused variable 'cmd' [-Wunused-variable]
+    6 | static char cmd[16];
+      |             ^~~
+1 warning generated.
+compiling main.c...
+UART.c(149): warning: format string is not a string literal [-Wformat-nonliteral]
+  149 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
+      |                                        ^~~
+UART.c(82): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   82 |             rxBuffer[rxWriteIndex] = receivedChar;
+      |             ^~~~~~~~
+UART.c(90): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   90 |             USART2->TDR = txBuffer[txReadIndex];
+      |                           ^~~~~~~~
+UART.c(108): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  108 |         UARTputc(*str++);
+      |                   ^~~
+UART.c(133): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  133 |             buffer[index] = '\0'; // Null-terminate the string
+      |             ^~~~~~
+UART.c(138): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  138 |             buffer[index++] = receivedChar;
+      |             ^~~~~~
+6 warnings generated.
+compiling UART.c...
 Encoder.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    21 |          GPIO_AFR_SET(A, 0, 1);
       |          ^~~~~~~~~~~~~~~~~~~~~
@@ -236,23 +253,6 @@ C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 4 warnings generated.
 compiling Encoder.c...
-keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |       ^
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~~~~~~~~~
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~
-5 warnings generated.
-compiling keypad.c...
 DriveMotor_Briefing.c(531): warning: variable 'i' set but not used [-Wunused-but-set-variable]
   531 |                 for (uint16_t i = 0; currentDutyCycle !=dutyCycle; i++){
       |                               ^
@@ -406,15 +406,6 @@ C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 10 warnings generated.
 compiling DriveMotor_Briefing.c...
 compiling PushButton.c...
-stepper.c(3): warning: In file included from...
-./stepper.h(13): warning: no newline at end of file [-Wnewline-eof]
-   13 | #endif
-      |       ^
-stepper.c(145): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  145 |            UARTprintf("Pattern: %d\n", HSpattern[count]);
-      |                                        ^~~~~~~~~
-2 warnings generated.
-compiling stepper.c...
 RCServoSkeleton.c(4): warning: In file included from...
 ./RCServo.h(15): warning: no newline at end of file [-Wnewline-eof]
    15 | #endif
@@ -463,6 +454,15 @@ C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 5 warnings generated.
 compiling RCServoSkeleton.c...
+stepper.c(3): warning: In file included from...
+./stepper.h(13): warning: no newline at end of file [-Wnewline-eof]
+   13 | #endif
+      |       ^
+stepper.c(145): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  145 |            UARTprintf("Pattern: %d\n", HSpattern[count]);
+      |                                        ^~~~~~~~~
+2 warnings generated.
+compiling stepper.c...
 UltraSonic.c(16): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    16 |     GPIO_AFRH(A, 4, 1UL); // TIM16 CH1
       |     ^~~~~~~~~~~~~~~~~~~~
@@ -537,16 +537,23 @@ C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 4 warnings generated.
 compiling UltraSonic.c...
-ArmClang: error: no such file or directory: '../../funicularKeil/startup_stm32f303xe.s'
-ArmClang: error: no input files
 assembling startup_stm32f303xe.s...
-ArmClang: error: no such file or directory: '../../funicularKeil/SysClock.c'
-ArmClang: error: no input files
 compiling SysClock.c...
-ArmClang: error: no such file or directory: '../../funicularKeil/system_stm32f3xx.c'
-ArmClang: error: no input files
+system_stm32f3xx.c(86): warning: In file included from...
+C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(11): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   11 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/Jessr/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(12): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   12 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+system_stm32f3xx.c(296): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  296 |   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+      |         ^~~~~~~~~~~~~
+3 warnings generated.
 compiling system_stm32f3xx.c...
-".\Objects\Lab1.axf" - 6 Error(s), 50 Warning(s).
+linking...
+Program Size: Code=8608 RO-data=1020 RW-data=4 ZI-data=1792  
+".\Objects\Lab1.axf" - 0 Error(s), 53 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -569,7 +576,6 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE@5.6.0
-Target not created.
 Build Time Elapsed:  00:00:03
 </pre>
 </body>

@@ -478,7 +478,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\funicularKeil\startup_stm32f303xe.s</PathWithFileName>
+      <PathWithFileName>.\startup_stm32f303xe.s</PathWithFileName>
       <FilenameWithoutPath>startup_stm32f303xe.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -490,7 +490,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\funicularKeil\SysClock.c</PathWithFileName>
+      <PathWithFileName>.\SysClock.c</PathWithFileName>
       <FilenameWithoutPath>SysClock.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -502,7 +502,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\funicularKeil\system_stm32f3xx.c</PathWithFileName>
+      <PathWithFileName>.\system_stm32f3xx.c</PathWithFileName>
       <FilenameWithoutPath>system_stm32f3xx.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
