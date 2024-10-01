@@ -509,6 +509,16 @@
               <FileType>1</FileType>
               <FilePath>.\system_stm32f3xx.c</FilePath>
             </File>
+            <File>
+              <FileName>LS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LS.h</FilePath>
+            </File>
+            <File>
+              <FileName>LS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\LS.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
