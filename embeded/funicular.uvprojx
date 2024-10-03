@@ -509,6 +509,26 @@
               <FileType>1</FileType>
               <FilePath>.\system_stm32f3xx.c</FilePath>
             </File>
+            <File>
+              <FileName>LimitSwitch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\LimitSwitch.c</FilePath>
+            </File>
+            <File>
+              <FileName>LimitSwitch.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LimitSwitch.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\UART3.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\UART3.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
