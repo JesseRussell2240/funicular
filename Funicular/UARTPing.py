@@ -1,32 +1,23 @@
-import RPi.GPIO as GPIO
+import serial
 import time
 
-# Set up GPIO mode
-GPIO.setmode(GPIO.BOARD)
+# Configure the serial connection
+SERIAL_PORT = "/dev/serial0"  # Serial port for UART (change if needed)
+BAUD_RATE = 9600                # Common baud rate for UART
 
-# Define GPIO pins for transmission and reception
-TX_PIN = 11  # GPIO pin for transmission
-RX_PIN = 13  # GPIO pin for reception
-
-# Set up GPIO pins
-GPIO.setup(TX_PIN, GPIO.OUT)  # Configure TX pin as output
-GPIO.setup(RX_PIN, GPIO.IN)    # Configure RX pin as input
+# Initialize the serial connection
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
 
 # Transmit function
 def transmit(data):
-    GPIO.output(TX_PIN, GPIO.HIGH)  # Set TX pin high for transmission
-    # Perform transmission here
+    # Send data over UART
+    ser.write(data.encode())  # Convert string to bytes
     print("Transmitting:", data)
-    time.sleep(1)  # Simulating transmission delay
-    GPIO.output(TX_PIN, GPIO.LOW)   # Set TX pin low after transmission
 
 # Receive function
 def receive():
-    data = None
-    if GPIO.input(RX_PIN) == GPIO.HIGH:  # Check if RX pin is receiving data
-        # Perform reception here
-        data = "Data received"  # Example received data
-    return data
+    data = ser.readline().decode('utf-8').strip()  # Read a line from UART
+    return data if data else None
 
 # Main function
 if __name__ == "__main__":
@@ -44,5 +35,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
-        # Clean up GPIO
-        GPIO.cleanup()
+        # Close the serial connection
+        ser.close()
