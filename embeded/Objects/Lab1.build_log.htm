@@ -28,17 +28,6 @@ Project File Date:  10/04/2024
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
 compiling utility.c...
-UART.c(124): warning: format string is not a string literal [-Wformat-nonliteral]
-  124 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
-      |                                        ^~~
-UART.c(136): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
-  136 |                 return(USART2->RDR);
-      |                 ~~~~~~ ~~~~~~~~^~~
-UART.c(101): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
-  101 |         UARTputc(*thisString++);
-      |                   ^~~~~~~~~~
-3 warnings generated.
-compiling UART.c...
 lcd.c(9): warning: In file included from...
 ./lcd.h(12): warning: non-portable path to file '"utility.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
    12 | #include "Utility.h"
@@ -148,6 +137,23 @@ lcd.c(170): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
       |                          ^~~
 13 warnings generated.
 compiling lcd.c...
+keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |       ^
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~~~~~~~~~
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~
+5 warnings generated.
+compiling keypad.c...
 Encoder.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    21 |          GPIO_AFR_SET(A, 0, 1);
       |          ^~~~~~~~~~~~~~~~~~~~~
@@ -222,24 +228,18 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 4 warnings generated.
 compiling Encoder.c...
-keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |       ^
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~~~~~~~~~
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~
-5 warnings generated.
-compiling keypad.c...
 compiling main.c...
+UART.c(124): warning: format string is not a string literal [-Wformat-nonliteral]
+  124 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
+      |                                        ^~~
+UART.c(136): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
+  136 |                 return(USART2->RDR);
+      |                 ~~~~~~ ~~~~~~~~^~~
+UART.c(101): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  101 |         UARTputc(*thisString++);
+      |                   ^~~~~~~~~~
+3 warnings generated.
+compiling UART.c...
 DriveMotor_Briefing.c(531): warning: variable 'i' set but not used [-Wunused-but-set-variable]
   531 |                 for (uint16_t i = 0; currentDutyCycle !=dutyCycle; i++){
       |                               ^
@@ -450,6 +450,7 @@ stepper.c(145): warning: unsafe buffer access [-Wunsafe-buffer-usage]
       |                                        ^~~~~~~~~
 2 warnings generated.
 compiling stepper.c...
+assembling startup_stm32f303xe.s...
 UltraSonic.c(16): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    16 |     GPIO_AFRH(A, 4, 1UL); // TIM16 CH1
       |     ^~~~~~~~~~~~~~~~~~~~
@@ -524,7 +525,6 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 4 warnings generated.
 compiling UltraSonic.c...
-assembling startup_stm32f303xe.s...
 compiling SysClock.c...
 system_stm32f3xx.c(86): warning: In file included from...
 C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(11): warning: invalid UTF-8 in comment [-Winvalid-utf8]

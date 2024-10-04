@@ -1,9 +1,10 @@
 import serial
 import time
+import random  # Import random module
 
 # Configure the serial connection
 SERIAL_PORT = "/dev/serial0"  # Serial port for UART (change if needed)
-BAUD_RATE = 9600                # Common baud rate for UART
+BAUD_RATE = 9600              # Common baud rate for UART
 
 # Initialize the serial connection
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
@@ -23,8 +24,11 @@ def receive():
 if __name__ == "__main__":
     try:
         while True:
-            # Transmit data
-            transmit("Hello, world!")
+            # Generate a random number between 0 and 100
+            random_number = str(random.randint(0, 100))
+            
+            # Transmit the random number
+            transmit(random_number)
             
             # Receive data
             received_data = receive()
@@ -32,6 +36,7 @@ if __name__ == "__main__":
                 print("Received:", received_data)
             
             time.sleep(1)  # Delay before next transmission
+
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
