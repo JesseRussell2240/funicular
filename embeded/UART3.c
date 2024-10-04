@@ -56,7 +56,9 @@ void USART3_IRQHandler(void) {
         // Read the received data
         char receivedChar = USART3->RDR;
         // Handle the received character
-             UART3printf("Received: %c\n", receivedChar);
+        UART3printf("Received: %c\n", receivedChar);
+			
+			       
     }
 }
 
@@ -71,6 +73,7 @@ void UART3puts(char *thisString) {
     while (*thisString) {
         UART3putc(*thisString++);
     }
+		UART3putc('\n');
 }
 
 char UART3getc(void) {

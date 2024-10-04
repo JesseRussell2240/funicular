@@ -1,6 +1,7 @@
 #include "stm32f303xe.h"
 #include "SysClock.h"
 //#include "UART.h"
+//#include "UART3.h"
 #include "UART3.h"
 #include <stdio.h>
 #include "utility.h"
@@ -16,7 +17,6 @@ int main(void){
    SystemCoreClockUpdate(); // Update the system core clock variable
   
 	 UART3_Init(); // UART2 initialization routine
-	 
 
 	
 for(;;){

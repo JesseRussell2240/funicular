@@ -529,6 +529,16 @@
               <FileType>5</FileType>
               <FilePath>.\UART3.h</FilePath>
             </File>
+            <File>
+              <FileName>UART1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\UART1.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\UART1.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
