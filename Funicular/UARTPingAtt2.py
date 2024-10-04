@@ -1,6 +1,5 @@
 import serial
 import time
-import random  # Import random module
 
 # Configure the serial connection
 SERIAL_PORT = "/dev/serial0"  # Serial port for UART (change if needed)
@@ -24,11 +23,8 @@ def receive():
 if __name__ == "__main__":
     try:
         while True:
-            # Generate a random number between 0 and 100
-            random_number = str(random.randint(0, 100))
-            
-            # Transmit the random number
-            transmit(random_number)
+            # Transmit data
+            transmit("A")
             
             # Receive data
             received_data = receive()
