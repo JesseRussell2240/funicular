@@ -16,11 +16,11 @@ def transmit(data):
 
 # Receive function
 def receive():
-    data = ser.readline().decode('utf-8').strip()  # Read a line from UART
-    return data if data else None
+    received_data = ser.read(ser.in_waiting or 1).decode('utf-8')  # Read available data
+    return received_data if received_data else None
 
 # Main function
-if __name__ == "__main__":
+if __name__ == "__main__":    
     try:
         while True:
             # Input message to transmit
@@ -31,7 +31,9 @@ if __name__ == "__main__":
                 break
             
             # Transmit the typed message
-            transmit(message)
+            transmit(message + '\n')  # Ensure message ends with newline
+            
+            time.sleep(1)  # Small delay before receiving response
             
             # Receive data
             received_data = receive()
