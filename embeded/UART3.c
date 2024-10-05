@@ -6,6 +6,10 @@
 
 #define MAX_UART3_BUFSIZ 60
 
+static char rxBuffer[MAX_UART3_BUFSIZ];  // Buffer to store the incoming string
+static volatile uint8_t rxIndex = 0;     // Index to track the buffer position
+
+
 void UART3_Init(void){
     // Part 1: clock source config
     RCC->APB1ENR |= RCC_APB1ENR_USART3EN; // Enable USART3 clock
@@ -55,10 +59,22 @@ void USART3_IRQHandler(void) {
     if (USART3->ISR & USART_ISR_RXNE) {
         // Read the received data
         char receivedChar = USART3->RDR;
-        // Handle the received character
-        UART3printf("Received: %c\n", receivedChar);
-			
-			       
+
+        // Add the received character to the buffer if space allows
+        if (rxIndex < MAX_UART3_BUFSIZ - 1) {
+            rxBuffer[rxIndex++] = receivedChar;
+        }
+
+        // Check if the received character is a newline or carriage return
+        if (receivedChar == '\n' || receivedChar == '\r') {
+            rxBuffer[rxIndex] = '\0';  // Null-terminate the string
+
+            // Process the complete string (e.g., print it)
+            UART3printf("Received: %s\n", rxBuffer);
+
+            // Reset the buffer index for the next string
+            rxIndex = 0;
+        }
     }
 }
 

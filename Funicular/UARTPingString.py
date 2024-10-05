@@ -8,22 +8,32 @@ BAUD_RATE = 9600              # Common baud rate for UART
 # Initialize the serial connection
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
 
-# Transmit function (sending string)
+# Transmit function
 def transmit(data):
-    ser.write(data.encode())  # Send the string as bytes
+    # Send data over UART
+    ser.write(data.encode())  # Convert string to bytes
     print("Transmitting:", data)
 
-# Receive function (receiving string)
+# Receive function
 def receive():
-    data = ser.readline().decode('utf-8').strip()  # Read until newline
-    return data if data else None
+    received_data = ser.read(ser.in_waiting or 1).decode('utf-8')  # Read available data
+    return received_data if received_data else None
 
 # Main function
-if __name__ == "__main__":
+if __name__ == "__main__":    
     try:
         while True:
-            # Transmit data
-            transmit("Hello STM32")  # Transmitting a string
+            # Input message to transmit
+            message = input("Enter message to transmit (type 'q' to quit): ")
+            
+            if message.lower() == 'q':
+                print("Quitting...")
+                break
+            
+            # Transmit the typed message
+            transmit(message + '\n')  # Ensure message ends with newline
+            
+            time.sleep(1)  # Small delay before receiving response
             
             # Receive data
             received_data = receive()
@@ -34,6 +44,7 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("Exiting...")
+
     finally:
         # Close the serial connection
         ser.close()

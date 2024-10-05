@@ -29,6 +29,34 @@ Project File Date:  10/04/2024
 Rebuild target 'Target 1'
 compiling utility.c...
 compiling main.c...
+UART.c(124): warning: format string is not a string literal [-Wformat-nonliteral]
+  124 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
+      |                                        ^~~
+UART.c(136): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
+  136 |                 return(USART2->RDR);
+      |                 ~~~~~~ ~~~~~~~~^~~
+UART.c(101): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+  101 |         UARTputc(*thisString++);
+      |                   ^~~~~~~~~~
+3 warnings generated.
+compiling UART.c...
+keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |       ^
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~~~~~~~~~
+keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  114 |  char pressedKey = charTable[rowNum][colNum];
+      |                    ^~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~~~~~~~~~
+keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  121 |                 return charTable[rowNum][colNum];
+      |                        ^~~~~~~~~
+5 warnings generated.
+compiling keypad.c...
 Encoder.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    21 |          GPIO_AFR_SET(A, 0, 1);
       |          ^~~~~~~~~~~~~~~~~~~~~
@@ -103,34 +131,6 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                         ^~~~
 4 warnings generated.
 compiling Encoder.c...
-UART.c(124): warning: format string is not a string literal [-Wformat-nonliteral]
-  124 |     vsnprintf(buffer, MAX_UART_BUFSIZ, fmt, args);
-      |                                        ^~~
-UART.c(136): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
-  136 |                 return(USART2->RDR);
-      |                 ~~~~~~ ~~~~~~~~^~~
-UART.c(101): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
-  101 |         UARTputc(*thisString++);
-      |                   ^~~~~~~~~~
-3 warnings generated.
-compiling UART.c...
-keypad.c(114): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |       ^
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~~~~~~~~~
-keypad.c(114): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  114 |  char pressedKey = charTable[rowNum][colNum];
-      |                    ^~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~~~~~~~~~
-keypad.c(121): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  121 |                 return charTable[rowNum][colNum];
-      |                        ^~~~~~~~~
-5 warnings generated.
-compiling keypad.c...
 lcd.c(9): warning: In file included from...
 ./lcd.h(12): warning: non-portable path to file '"utility.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
    12 | #include "Utility.h"
@@ -526,6 +526,18 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 compiling UltraSonic.c...
 assembling startup_stm32f303xe.s...
 compiling SysClock.c...
+system_stm32f3xx.c(86): warning: In file included from...
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(11): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   11 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
+      |                                                ^
+C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(12): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   12 |   *                code will be based on direct access to peripheral<92>s registers 
+      |                                                                     ^
+system_stm32f3xx.c(296): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+  296 |   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+      |         ^~~~~~~~~~~~~
+3 warnings generated.
+compiling system_stm32f3xx.c...
 LimitSwitch.c(20): warning: unsafe buffer access [-Wunsafe-buffer-usage]
    20 |         SYSCFG->EXTICR[1] &= ~SYSCFG_EXTICR2_EXTI6;
       |         ^~~~~~~~~~~~~~
@@ -552,29 +564,17 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
       |                             ^
 4 warnings generated.
 compiling LimitSwitch.c...
-system_stm32f3xx.c(86): warning: In file included from...
-C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(11): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   11 |   *              - To use or not the peripheral<92>s drivers in application code(i.e. 
-      |                                                ^
-C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/Device/ST/STM32F3xx/Include\stm32f3xx.h(12): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   12 |   *                code will be based on direct access to peripheral<92>s registers 
-      |                                                                     ^
-system_stm32f3xx.c(296): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-  296 |   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
-      |         ^~~~~~~~~~~~~
-3 warnings generated.
-compiling system_stm32f3xx.c...
-UART3.c(57): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
-   57 |         char receivedChar = USART3->RDR;
+UART3.c(61): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
+   61 |         char receivedChar = USART3->RDR;
       |              ~~~~~~~~~~~~   ~~~~~~~~^~~
-UART3.c(89): warning: format string is not a string literal [-Wformat-nonliteral]
-   89 |     vsnprintf(buffer, MAX_UART3_BUFSIZ, fmt, args);
+UART3.c(105): warning: format string is not a string literal [-Wformat-nonliteral]
+  105 |     vsnprintf(buffer, MAX_UART3_BUFSIZ, fmt, args);
       |                                         ^~~
-UART3.c(97): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
-   97 |         return (USART3->RDR);
+UART3.c(113): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
+  113 |         return (USART3->RDR);
       |         ~~~~~~  ~~~~~~~~^~~
-UART3.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   21 |     GPIO_AFR_SET(B, 10, 7); // Set alternate function for USART3
+UART3.c(25): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   25 |     GPIO_AFR_SET(B, 10, 7); // Set alternate function for USART3
       |     ^~~~~~~~~~~~~~~~~~~~~~
 ./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
    48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
@@ -591,8 +591,8 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 ./utility.h(26): note: expanded from macro 'FORCE_BITS'
    26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
       |            ^~~~
-UART3.c(21): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   21 |     GPIO_AFR_SET(B, 10, 7); // Set alternate function for USART3
+UART3.c(25): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   25 |     GPIO_AFR_SET(B, 10, 7); // Set alternate function for USART3
       |     ^~~~~~~~~~~~~~~~~~~~~~
 ./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
    48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
@@ -609,8 +609,8 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 ./utility.h(26): note: expanded from macro 'FORCE_BITS'
    26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
       |                         ^~~~
-UART3.c(22): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   22 |     GPIO_AFR_SET(B, 11, 7);
+UART3.c(26): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   26 |     GPIO_AFR_SET(B, 11, 7);
       |     ^~~~~~~~~~~~~~~~~~~~~~
 ./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
    48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
@@ -627,8 +627,8 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 ./utility.h(26): note: expanded from macro 'FORCE_BITS'
    26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
       |            ^~~~
-UART3.c(22): warning: unsafe buffer access [-Wunsafe-buffer-usage]
-   22 |     GPIO_AFR_SET(B, 11, 7);
+UART3.c(26): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   26 |     GPIO_AFR_SET(B, 11, 7);
       |     ^~~~~~~~~~~~~~~~~~~~~~
 ./utility.h(48): note: expanded from macro 'GPIO_AFR_SET'
    48 | #define GPIO_AFR_SET(port, pin, mode) FORCE_BITS((GPIOx(port)->AFR[pin >> 3UL]), (15UL << ((pin & 7UL) * 4)), ((mode) << ((pin & 7UL) * 4)))
@@ -645,10 +645,16 @@ C:/Users/hayde/AppData/Local/Arm/Packs/Keil/STM32F3xx_DFP/2.2.2/Drivers/CMSIS/De
 ./utility.h(26): note: expanded from macro 'FORCE_BITS'
    26 |         ( (port) = ( ( (port) & (~(mask)) ) | ( (value) & (mask) )) )
       |                         ^~~~
-UART3.c(74): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
-   74 |         UART3putc(*thisString++);
+UART3.c(65): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   65 |             rxBuffer[rxIndex++] = receivedChar;
+      |             ^~~~~~~~
+UART3.c(70): warning: unsafe buffer access [-Wunsafe-buffer-usage]
+   70 |             rxBuffer[rxIndex] = '\0';  // Null-terminate the string
+      |             ^~~~~~~~
+UART3.c(90): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
+   90 |         UART3putc(*thisString++);
       |                    ^~~~~~~~~~
-8 warnings generated.
+10 warnings generated.
 compiling UART3.c...
 UART1.c(57): warning: implicit conversion loses integer precision: 'volatile uint16_t' (aka 'volatile unsigned short') to 'char' [-Wimplicit-int-conversion]
    57 |         char receivedChar = USART1->RDR;
@@ -737,8 +743,8 @@ UART1.c(72): warning: unsafe pointer arithmetic [-Wunsafe-buffer-usage]
 8 warnings generated.
 compiling UART1.c...
 linking...
-Program Size: Code=9052 RO-data=1036 RW-data=4 ZI-data=1656  
-".\Objects\Lab1.axf" - 0 Error(s), 69 Warning(s).
+Program Size: Code=9148 RO-data=1048 RW-data=4 ZI-data=1720  
+".\Objects\Lab1.axf" - 0 Error(s), 71 Warning(s).
 
 <h2>Software Packages used:</h2>
 
