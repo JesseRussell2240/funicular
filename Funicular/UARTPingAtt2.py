@@ -23,8 +23,15 @@ def receive():
 if __name__ == "__main__":
     try:
         while True:
-            # Transmit data
-            transmit("A")
+            # Input message to transmit
+            message = input("Enter message to transmit (type 'q' to quit): ")
+            
+            if message.lower() == 'q':
+                print("Quitting...")
+                break
+            
+            # Transmit the typed message
+            transmit(message)
             
             # Receive data
             received_data = receive()
@@ -35,6 +42,7 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("Exiting...")
+
     finally:
         # Close the serial connection
         ser.close()
