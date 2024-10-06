@@ -6,7 +6,7 @@ Selfdriving R-pi code
 1. Get IP of RPI should be like 192.168.#.###
 
 2. Enable SSH on the Rpi
-   -Open Terminal on the Rpi and type **"sudo raspi-config"** in the configuration menu enable SSH
+   -Open Terminal on the Rpi and type **"sudo raspi-config"** in the configuration menu go to "3. Interface      Options" and enable SSH
    -In CMD on laptop type "ssh rpi@rpi ip address found in step one" Ex. **"ssh rpi@192.168.#.###"**
    -If prompted with "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED" it means you have an existing key under that IP address, type "ssh-keygen -R ip address found in step one" Ex. **"ssh-keygen -R 192.168.#.###"** This will clear that key
    -Now try **"ssh rpi@192.168.#.###"** again, when prompted to continue connected type **"yes"**
