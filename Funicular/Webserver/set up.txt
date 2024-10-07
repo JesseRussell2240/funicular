@@ -1,0 +1,6 @@
+1. sudo apt-get install python3-opencv
+
+2. python3 app.py
+
+pip install flask-socketio
+pip install eventlet  # Or gevent
