@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# Function to display the menu
+function show_menu() {
+    clear
+    echo "MENU SYSTEM"
+    echo "1. List file details in current folder"
+    echo "2. Create backup of current files in user-specified folder"
+    echo "3. Create a ZIP archive of current files in user-specified archive"
+    echo "4. Output all text files one page at a time in current folder"
+    echo "5. Delete files in current folder"
+    echo "6. Output help information"
+    echo "7. Exit"
+    echo -n "Enter your choice: "
+}
+
+# 1. List file details in current folder
+function list_files() {
+    echo "Listing file details in current folder:"
+    ls -l
+}
+
+# 2. Create backup of current files
+function create_backup() {
+    echo -n "Enter the name of the destination folder: "
+    read folder_name
+    if [ -d "$folder_name" ]; then
+        echo "Folder already exists. Backing up files."
+    else
+        mkdir -p "$folder_name"
+        echo "Folder $folder_name created."
+    fi
+    cp -r * "$folder_name"
+    echo "Files have been backed up to $folder_name."
+}
+
+# 3. Create a ZIP archive of current files
+function create_archive() {
+    echo -n "Enter the name of the ZIP archive (without extension): "
+    read archive_name
+    zip -r "${archive_name}.zip" *
+    echo "Files have been archived into ${archive_name}.zip."
+}
+
+# 4. Output all text files one page at a time
+function output_text_files() {
+    echo "Displaying all text files one page at a time:"
+    for file in *.txt; do
+        less "$file"
+    done
+}
+
+# 5. Delete files in current folder
+function delete_files() {
+    echo "Warning: This will delete all files in the current folder!"
+    echo -n "Are you sure you want to delete all files? (y/n): "
+    read confirmation
+    if [ "$confirmation" == "y" ]; then
+        rm -r *
+        echo "All files have been deleted."
+    else
+        echo "File deletion canceled."
+    fi
+}
+
+# 6. Output help information
+function output_help() {
+    echo "Help Information:"
+    echo "1. List files in the current folder with details using the 'ls' command."
+    echo "2. Create a backup by copying all files into a user-specified folder."
+    echo "3. Create a ZIP archive of all current files."
+    echo "4. Display text files one page at a time using 'less'."
+    echo "5. Delete all files in the current folder."
+    echo "6. Output this help information."
+}
+
+# Main menu loop
+while true; do
+    show_menu
+    read choice
+    case $choice in
+        1) list_files ;;
+        2) create_backup ;;
+        3) create_archive ;;
+        4) output_text_files ;;
+        5) delete_files ;;
+        6) output_help ;;
+        7) echo "Exiting..."; break ;;
+        *) echo "Invalid choice. Please try again." ;;
+    esac
+    echo -n "Press Enter to continue..."
+    read
+done
