@@ -494,6 +494,10 @@ void SetMotorDir( uint8_t motor, uint8_t dir )
                SET_BITS(GPIOA->ODR, GPIO_ODR_5);
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);
 							
+						} else if (dir == DIR_BWD) {////////Rear Right Motor Backward
+               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
+							 SET_BITS(GPIOC->ODR, GPIO_ODR_13);
+
             } else if (dir == DIR_STOP){
                CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);

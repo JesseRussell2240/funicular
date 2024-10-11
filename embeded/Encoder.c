@@ -1,14 +1,15 @@
 //Hayden Foster & Jesse Russell
 // Motor Encoder Module Source File
 
+#include "UART.h"
 #include "Encoder.h"
-	static uint32_t leftEncOld = 0;
-	static uint32_t leftEncNew = 0;
-	static uint32_t rightEncOld = 0;
-	static uint32_t rightEncNew = 0;
-	
-	uint32_t leftEncoderPeriod = 0;
-	uint32_t rightEncoderPeriod = 0;
+
+static uint32_t lastChannelA = 0;
+static uint32_t lastChannelB = 0;
+static volatile int8_t direction = 0; // 1 for forward, -1 for backward, 0 for stationary
+static volatile uint32_t currentChannelA = 0; // Current state of Channel A
+static volatile uint32_t currentChannelB = 0; // Current state of Channel B
+
 
 
 void Encoder_Init(void)
@@ -113,49 +114,67 @@ void Encoder_Init(void)
 
 // So that....
 
-void TIM2_IRQHandler( void )
-{
+// Declare currentChannelA and currentChannelB globally
 
-	// In TIM2 IRQ handler
-	
-	// Check which channel (CCR1 or CCR2) fired the interrupt by checking
-	//    If CCR1 (Left Wheel) triggers the IRQ, CC1IF in SR will be set
-	if((TIM2->SR) & (TIM_SR_CC1IF)){
-		
-			leftEncOld = leftEncNew;
-			leftEncNew = TIM2->CCR1;
-	
+
+void TIM2_IRQHandler(void)
+{
+    // Check if channel A triggered the interrupt
+    if ((TIM2->SR) & (TIM_SR_CC1IF)) {
+        // Clear the interrupt flag
+        CLEAR_BITS(TIM2->SR, TIM_SR_CC1IF);
+
+        // Read the current state of the channels
+        currentChannelA = (GPIOA->IDR & (1 << 0)) >> 0; // Read state of PA0
+        currentChannelB = (GPIOA->IDR & (1 << 1)) >> 1; // Read state of PA1
+
+        // Determine direction based on the current state of channels
+        if (currentChannelA == 1 && currentChannelB == 0) {
+            direction = 1; // Moving forward
+        } else if (currentChannelA == 0 && currentChannelB == 1) {
+            direction = -1; // Moving backward
+        }
+
+        // Optionally update lastChannel states here if needed
+        lastChannelA = currentChannelA;
+        lastChannelB = currentChannelB; 
     }
 
-	//    IF CCR2 (Right Wheel) triggers the IRQ, CC2IF in SR will be set
-	if((TIM2->SR) & (TIM_SR_CC2IF)){
-		
-		rightEncOld = rightEncNew;
-		rightEncNew = TIM2->CCR2;
-    
+    // Check if channel B triggered the interrupt
+    if ((TIM2->SR) & (TIM_SR_CC2IF)) {
+        // Clear the interrupt flag
+        CLEAR_BITS(TIM2->SR, TIM_SR_CC2IF);
 
-	}
- 
+        // Read the current state of the channels
+        currentChannelA = (GPIOA->IDR & (1 << 0)) >> 0; // Read state of PA0
+        currentChannelB = (GPIOA->IDR & (1 << 1)) >> 1; // Read state of PA1
 
-	// Then, in each respective case, read the CCR value as the CURRENT TIMESTAMP
-	// 	1. Encooder Period = CURRENT TIMESTAMP - MOST RECENT HISTORICAL
-	//  2. Update MOST RECENT HISTORICAL = CURRENT TIMESTAMP
-	
-	
-	// [Question for you]:  What happens if timer counter overflows?
-	//			i.e. takes too long for the vane to pass through the optical assembly?
-	
-	//  We will answer this at the end of the lab session
-	
+        // Determine direction based on the current state of channels
+        if (currentChannelB == 1 && currentChannelA == 0) {
+            direction = -1; // Moving backward
+        } else if (currentChannelB == 0 && currentChannelA == 1) {
+            direction = 1; // Moving forward
+        }
+
+        // Optionally update lastChannel states here if needed
+        lastChannelB = currentChannelB; 
+        lastChannelA = currentChannelA; 
+    }
+
+    encoderDelta();
 }
+
 
 // You can add some helper functions below to get the encoder period
 //   ** NOTE: LEAVE ENCODER PERIOD IN INTEGER COUNT!  DON'T PERFORM FLOAT CALCULATION! (Why?)
 
 
 void encoderDelta(void){
-	//leftEncoderPeriod = (((lNew - lOld)*28)/60000000);
-	//rightEncoderPeriod = (((rNew - rOld)*28)/60000000);
-	leftEncoderPeriod = (leftEncNew - leftEncOld);
-	rightEncoderPeriod = (rightEncNew - rightEncOld);
+	
+if (direction ==1){
+	UARTprintf("Left\n");
+}
+else if (direction ==-1){
+	UARTprintf("Right\n");
+}
 }

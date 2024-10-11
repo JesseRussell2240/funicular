@@ -1,4 +1,4 @@
-./objects/encoder.o: Encoder.c Encoder.h \
+./objects/encoder.o: Encoder.c UART.h Encoder.h \
   C:\Users\hayde\AppData\Local\Arm\Packs\Keil\STM32F3xx_DFP\2.2.2\Drivers\CMSIS\Device\ST\STM32F3xx\Include\stm32f303xe.h \
   C:\Users\hayde\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm4.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
