@@ -72,8 +72,11 @@
         }
         // Send control commands (e.g., 'forward', 'left', 'right', 'backward') for manual driving
         function sendControl(direction) {
-            console.log(`Sending ${direction} control...`);
-            // Example of sending control commands via WebSocket or HTTP request
+            let url = '/' + direction;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
