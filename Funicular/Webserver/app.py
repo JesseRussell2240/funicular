@@ -1,25 +1,28 @@
 from flask import Flask, render_template, Response
-import cv2
+from picamera2 import Picamera2
+from io import BytesIO
+from time import sleep
 
 app = Flask(__name__)
 
 # Initialize the camera
-camera = cv2.VideoCapture(0)  # 0 is the default camera, change if using a USB camera
+picam2 = Picamera2()
+picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+picam2.start()
 
 def generate_frames():
     while True:
-        # Read the camera frame
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            # Encode the frame in JPEG format
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            
-            # Use generator to yield frames as a byte stream
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        # Capture a frame from the camera
+        frame = picam2.capture_array()
+        
+        # Convert the frame to a JPEG image
+        stream = BytesIO()
+        picam2.capture_file(stream, format='jpeg')
+        stream.seek(0)
+        
+        # Yield the frame in a byte stream
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n')
 
 @app.route('/')
 def index():
