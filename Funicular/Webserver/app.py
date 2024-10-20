@@ -14,7 +14,7 @@ picam2.start()
  
 # Configure the serial connection for the car controls
 SERIAL_PORT = "/dev/serial0"  # Serial port for UART (change if needed)
-BAUD_RATE = 9600              # Common baud rate for UART
+BAUD_RATE = 9600              # baud rate for UART
  
 # Initialize the serial connection
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
