@@ -62,3 +62,26 @@ function sendControl(direction) {
         }).then(response => console.log(response));
     }
 }
+
+// Start Autonomous mode
+function startAutonomousMode() {
+    fetch('/start_autonomous')  // Send a GET request to the correct Flask route
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            // You can update the button visibility or other UI elements based on the response
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Stop Autonomous mode
+function stopAutonomousMode() {
+    fetch('/stop_autonomous')  // Send a GET request to the correct Flask route
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            // You can update the button visibility or other UI elements based on the response
+        })
+        .catch(error => console.error('Error:', error));
+}
+
