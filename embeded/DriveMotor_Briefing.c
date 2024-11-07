@@ -6,7 +6,7 @@
 
 #include "DriveMotor.h"
 #include "utility.h"
-#include "UART.h"
+#include "UART3.h"
 
 // Drive Motor Configuration Parameters
 // - Motor Speed Control Pins:
@@ -388,13 +388,11 @@ void SetMotorSpeed( uint8_t motor, uint16_t dutyCycle )
         case motorFrontRight:
             TIM8->CCR2 = dutyCycle;
             break;
-				 case motorRearLeft:
+				 case motorRears:
             TIM8->CCR3 = dutyCycle;
-            break;
-        case motorRearRight:
             TIM8->CCR4 = dutyCycle;
             break;
-				case motorFiring:
+				case motorTurning:
             TIM3->CCR2 = (dutyCycle);
             break;
   }
@@ -412,89 +410,48 @@ void SetMotorDir( uint8_t motor, uint8_t dir )
 
 	// Deploy a switch structure to set the corresponding GPIO pins according to the direction input
 	 switch (motor) {
-        case motorFrontLeft:
-            
-            if (dir == DIR_FWD) {////////Front Left Motor Forward
-               SET_BITS(GPIOA->ODR, GPIO_ODR_15);  
-							 CLEAR_BITS(GPIOD->ODR, GPIO_ODR_2);
-							
-            } else if (dir == DIR_BWD) {////////Front Left Motor Backward
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_15);  
-							 SET_BITS(GPIOD->ODR, GPIO_ODR_2);
-							
-            } else if (dir == DIR_STOP){////////Front Left Motor Stop
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_15);
-						 	 CLEAR_BITS(GPIOD->ODR, GPIO_ODR_2);
-            }	else {
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_15);
-						 	 CLEAR_BITS(GPIOD->ODR, GPIO_ODR_2);
-            }
-            break;
 						
-        case motorFrontRight:
-            
-            if (dir == DIR_FWD) {////////Front Right Motor Forward
-               SET_BITS(GPIOC->ODR, GPIO_ODR_3);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
-							
-            } else if (dir == DIR_BWD) {////////Front Right Motor Backward
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
-							 SET_BITS(GPIOC->ODR, GPIO_ODR_2);
-							
-            } else if (dir == DIR_STOP){////////Front Right Motor Stop
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
-            } else {
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
-            }
-            break;
-						
-				case motorRearLeft:
+				case motorRears:
             
             if (dir == DIR_FWD) {////////Rear Left Motor Forward
-               SET_BITS(GPIOB->ODR, GPIO_ODR_12);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4); 
+							//UART3printf("yog");
+              SET_BITS(GPIOB->ODR, GPIO_ODR_12);
+							CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4); 
+							SET_BITS(GPIOC->ODR, GPIO_ODR_1);
+							CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
+							//UART3printf("yogirt");
+							 
 							
             } else if (dir == DIR_BWD) {////////Rear Left Motor Backward
                CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);  
 							 SET_BITS(GPIOC->ODR, GPIO_ODR_4);  
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
+							 SET_BITS(GPIOC->ODR, GPIO_ODR_0);
+							 //UART3printf("neeeheh");
 							
             } else if (dir == DIR_STOP){////////Rear Left Motor Stop
                CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
 						 	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
+							// UART3printf("hello");
+							
             } else {
-               CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
-						 	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
+              // CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
+						 	// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
+							// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
+							// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
 						}
             break;
 						
-				case motorRearRight:
-            
-            if (dir == DIR_FWD) {////////Rear Right Motor Forward
-               SET_BITS(GPIOC->ODR, GPIO_ODR_1);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
-							
-            } else if (dir == DIR_BWD) {////////Rear Right Motor Backward
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
-							 SET_BITS(GPIOC->ODR, GPIO_ODR_0);
-							
-            } else if (dir == DIR_STOP){////////Rear Right Motor Stop
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
-            } else {
-               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
-            }
-            break;
 						
-					case motorFiring:
+					case motorTurning:
             
-            if (dir == DIR_FWD) {
+            if (dir == DIR_RIGHT) {
                SET_BITS(GPIOA->ODR, GPIO_ODR_5);
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);
 							
-						} else if (dir == DIR_BWD) {////////Rear Right Motor Backward
+						} else if (dir == DIR_LEFT) {////////Rear Right Motor Backward
                CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
 							 SET_BITS(GPIOC->ODR, GPIO_ODR_13);
 
@@ -525,33 +482,12 @@ void SetMotor( uint8_t motor, uint8_t dir, uint16_t dutyCycle )
 	SetMotorSpeed(motor, dutyCycle );
 }
 
-///////////////////////////////////////////////////////////////
-/////////////////////Ignore this//////////////////////////////
-/////////////////////////////////////////////////////////////
-void SweepMotor(uint8_t motor, uint16_t dutyCycle)
+
+
+void StopAllMotors()
 {
-	int16_t cycleDown = -1;
-	if (currentDutyCycle > dutyCycle){
-		for (uint16_t i = 0; currentDutyCycle !=dutyCycle; i++){
-			currentDutyCycle +=cycleDown;
-			SetMotorSpeed(motor, currentDutyCycle );
-			UARTprintf("LeftMotor Speed: %d\n\n", TIM8->CCR1);
-		  UARTprintf("RightMotor Speed: %d\n\n", TIM8->CCR2);
-			UARTprintf("Current Duty Cycle: %d\n\n ", currentDutyCycle);
-			Delay_ms(5);
-			
-		}
-} else if (currentDutyCycle < dutyCycle) {
-    // If current duty cycle is less than desired duty cycle, increase duty cycle
-    for (uint16_t i = 0; currentDutyCycle != dutyCycle; i++) {
-        currentDutyCycle += 1;
-        SetMotorSpeed(motor, currentDutyCycle);
-        UARTprintf("LeftMotor Speed: %d\n\n", TIM8->CCR1);
-        UARTprintf("RightMotor Speed: %d\n\n", TIM8->CCR2);
-        UARTprintf("Current Duty Cycle: %d\n\n ", currentDutyCycle);
-        Delay_ms(5);
-    }
+	  SetMotor(motorFrontLeft, DIR_STOP, 0);
+		SetMotor(motorFrontRight, DIR_STOP, 0 );
+		SetMotor(motorRears, DIR_STOP, 0);
+		SetMotor(motorTurning, DIR_STOP, 0);  
 }
-
-}
-

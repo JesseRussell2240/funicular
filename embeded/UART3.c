@@ -1,4 +1,4 @@
-#include "UART3.h"
+/*#include "UART3.h"
 #include "utility.h"
 #include "stm32f303xe.h"
 #include <stdio.h>
@@ -6,7 +6,7 @@
 
 #define MAX_UART3_BUFSIZ 60
 
-static char rxBuffer[MAX_UART3_BUFSIZ];  // Buffer to store the incoming string
+char rxBuffer[MAX_UART3_BUFSIZ];  // Buffer to store the incoming string
 static volatile uint8_t rxIndex = 0;     // Index to track the buffer position
 
 
@@ -17,7 +17,7 @@ void UART3_Init(void){
     RCC->CFGR3 &= ~RCC_CFGR3_USART3SW_1;
     RCC->CFGR3 |= RCC_CFGR3_USART3SW_0; // Select System clock for USART3
 
-    // Part 2: GPIO config (PB10 - TX, PB11 - RX for USART3)
+    // Part 2: GPIO config (PB10 - TX, PB11 - RX for USART3)-100
     ENABLE_CLOCKx(B);
     MODER_SET(B, 10, MODER_AF); // Set PB10 to AF
     MODER_SET(B, 11, MODER_AF); // Set PB11 to AF
@@ -114,3 +114,4 @@ char UART3getcNB(void) {
     else
         return '\0';
 }
+*/

@@ -1,6 +1,6 @@
 //Hayden Foster & Jesse Russell
 // Motor Encoder Module Source File
-
+/*
 #include "UART.h"
 #include "Encoder.h"
 
@@ -178,3 +178,4 @@ else if (direction ==-1){
 	UARTprintf("Right\n");
 }
 }
+*/
