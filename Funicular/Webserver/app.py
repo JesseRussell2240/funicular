@@ -1,10 +1,14 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, g
 from picamera2 import Picamera2
 import serial
 import time
 from io import BytesIO
 import cv2
 import numpy as np
+
+
+# Flag to control autonomous mode
+autonomous_mode = True
 
 # Flask web server
 app = Flask(__name__)
@@ -15,46 +19,148 @@ picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
 picam2.start()
 
 # Configure the serial connection for the car controls
-SERIAL_PORT = "/dev/serial0"  # Serial port for UART (change if needed)
+SERIAL_PORT = "/dev/ttyAMA10"  # Serial port for UART (change if needed)
 BAUD_RATE = 9600                # Common baud rate for UART
 
 # Initialize the serial connection
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
 
+
 # Global variable for steering angle
-steering_angle = 0.0  # Angle in degrees (-90 to 90)
+steering_angle = 30
+ 
 
 # Transmit function
 def transmit(data):
     try:
+        # Open the serial port
+        ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+
+        # Send data over UART (encoding to bytes)
         ser.write(data.encode())  # Convert string to bytes
         print("Transmitting:", data)
+
+        # Wait for the response "1\n"
+        while True:
+            # Read one byte at a time from the serial port
+            response = ser.read(1).decode()  # Reading single byte
+
+            if response == '1':
+                # Now, wait for the newline character '\n'
+                response += ser.read(1).decode()  # Read the newline character '\n'
+
+                if response == '1\n':  # Check if the response is exactly "1\n"
+                    print("Received confirmation:", response)
+                    break  # Exit loop if the correct response is received
+
+            # Optional: Add a timeout here to break after a certain amount of time
+            if ser.timeout:
+                print("Timeout: No confirmation received")
+                break
+
+    except Exception as e:
+        print("Error:", e)
+
     finally:
+        # Close the serial port
         ser.close()
 
+
 # Movement functions
-def move_forward():
-    transmit("1")  # Full forward
+def move_forward(pwm_percentage=60, steering_angle=30):
+    """Move forward with PWM and steering angle control"""
+    # Ensure the pwm_percentage is within the range 60-99 and steering_angle is within 0-60
+    pwm_percentage = max(60, min(99, pwm_percentage))  # Clamps PWM between 60 and 99
+    steering_angle = max(0, min(60, steering_angle))  # Clamps steering angle between 0 and 60
 
-def move_backward():
-    transmit("2")  # Full backward
+    # Create the movement string
+    command = f"+ {pwm_percentage} {steering_angle:02d}"
+    transmit(command + '\n')
+    print(f"Command: {command}")  # Output the command for debugging
 
+def move_backward(pwm_percentage=60, steering_angle=30):
+    """Move backward with PWM and steering angle control"""
+    # Ensure the pwm_percentage is within the range 60-99 and steering_angle is within 0-60
+    pwm_percentage = max(60, min(99, pwm_percentage))  # Clamps PWM between 60 and 99
+    steering_angle = max(0, min(60, steering_angle))  # Clamps steering angle between 0 and 60
+
+    # Create the movement string
+    command = f"- {pwm_percentage} {steering_angle:02d}"
+    transmit(command + '\n')
+    print(f"Command: {command}")  # Output the command for debugging
+    autonomous_mode = True
+    
+
+def move_left(pwm_percentage=60):
+    """Move left with PWM control and default steering angle"""
+    # Use default steering angle of 0 (full left)
+    steering_angle = 0
+
+    # Ensure the pwm_percentage is within the range 60-99
+    pwm_percentage = max(60, min(99, pwm_percentage))  # Clamps PWM between 60 and 99
+    pwm_precentage = 0
+
+    # Create the movement string
+    command = f"- {pwm_percentage} {steering_angle:02d}"  # Negative for left turn
+    transmit(command + '\n')
+    print(f"Command: {command}")  # Output the command for debugging
+
+def move_right(pwm_percentage=60):
+    """Move right with PWM control and default steering angle"""
+    # Use default steering angle of 60 (full right)
+    steering_angle = 60
+
+    # Ensure the pwm_percentage is within the range 60-99
+    pwm_percentage = max(60, min(99, pwm_percentage))  # Clamps PWM between 60 and 99
+    pwm_precentage = 0
+    # Create the movement string
+    command = f"+ {pwm_percentage} {steering_angle:02d}"  # Positive for right turn
+    transmit(command + '\n')
+    print(f"Command: {command}")  # Output the command for debugging
+    
 def move_stop():
-    transmit("0")  # Stop
+    transmit("| 00 30" + '\n')
+    print("STOPPED")  # Output the command for debugging
 
-def move_left():
-    transmit("4")  # Turn left
+    
 
-def move_right():
-    transmit("3")  # Turn right
 
-# Helper function to update steering angle
 def update_steering(midpoint_x, image_center_x):
-    global steering_angle
-    offset = midpoint_x - image_center_x  # Calculate offset from center
-    new_theta = offset / (image_center_x) * 90  # Map offset to -90 to 90 degrees
-    steering_angle = steering_angle * 0.9 + new_theta * 0.1  # Weighted average
-    print(f"Steering Angle: {steering_angle}")
+    global steering_angle, autonomous_mode
+    
+    # Calculate the offset from the center (how far left or right the midpoint is)
+    offset = midpoint_x - image_center_x  # Midpoint is to the left or right of the center
+    
+    # Normalize the offset to the range [-1, 1] based on the width of the image
+    normalized_offset = offset / image_center_x  # This will range from -1 (left) to 1 (right)
+    
+    # Map the normalized offset to the steering angle range [0, 60]
+    new_steering_angle = 30 + normalized_offset * 30  # 30 is the midpoint, with 30 as the max range for each direction
+    
+    # Clip the steering angle to ensure it's within [0, 60]
+    new_steering_angle = max(0, min(60, new_steering_angle))
+    
+    # Round the steering angle to the nearest integer
+    new_steering_angle = round(new_steering_angle)
+    
+    # Update the global steering angle with a weighted average (smooth the steering)
+    steering_angle = steering_angle * 0.6 + new_steering_angle * 0.4  # Weighted average for smooth steering
+    
+    print(f"Updated Steering Angle: {steering_angle}")
+    print(autonomous_mode)
+    
+    # If in autonomous mode, send the updated steering angle to the MCU
+    #if autonomous_mode:
+    pwm_percentage = 80  # Set the PWM percentage to 80 for autonomous control
+    
+    # Create the movement command string
+    #command = f"+ {pwm_percentage} {steering_angle:02d}"
+    transmit("+ 80 " + str(int(steering_angle)) + '\n')
+    #print(f"Command: {command}")  # Output the command for debugging
+    time.sleep(.25)
+    move_stop()
+    time.sleep(0.5)
+
 
 # Function to detect the largest pylon for both colors
 def detect_pylons(frame):
@@ -165,6 +271,19 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n')
 
+@app.route('/start_autonomous')
+def start_autonomous():
+    autonomous_mode = True
+    # Start the camera processing in a separate thread
+    return "Autonomous mode starte"
+
+@app.route('/stop_autonomous')
+def stop_autonomous():
+    autonomous_mode = False
+    move_stop()  # Stop the vehicle
+    return "Auto_Stop"
+  
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -175,6 +294,7 @@ def video_feed():
 
 @app.route('/forward')
 def forward():
+    transmit('\n')
     move_forward()
     return "Forward"
 
