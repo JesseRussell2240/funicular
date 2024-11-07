@@ -12,3 +12,14 @@ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31
 sudo apt update
 sudo apt install ros-noetic-desktop-full
 
+
+sudo apt install python3-opencv
+sudo apt install libcamera-apps
+Navigate to Interfacing Options > Camera > Enable.
+sudo apt install libcamera-apps
+
+this should take a still photo confirming config of camera module
+libcamera-still -o test.jpg
+OPTIONALLY test video tecording via
+libcamera-vid -t 10000 -o test.h264
+

@@ -38,3 +38,7 @@ preception also has a main to test preception and cameras joint integration. Ens
 This is to install flask and other for R-Pi server hosting website to control and recive video remotly
 pip install flask flask-socketio opencv-python
 
+
+ENSURE FLASK SERVER IS NOT IN DEBUG OR LIVESTREAM WILL NOT WORK
+
+

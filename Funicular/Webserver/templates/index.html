@@ -19,7 +19,6 @@
         </select>
         <button id="autonomous-start-btn" style="display:none;" onclick="startAutonomousMode()">Start Autonomous</button>
     </div>
-
     <!-- Manual Controls  -->
     <div id="manual-controls">
         <h2>Manual Controls</h2>
@@ -31,19 +30,16 @@
         </div>
         <p>Use WASD keys or Gamepad for control.(Coming soon!)</p>
     </div>
-
     <!-- Live Feed -->
     <div id="live-camera">
         <h2>Live Camera Feed</h2>
         <img id="camera-stream" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
     </div>
-
     <!-- ROS Simulation -->
     <div id="simulation">
         <h2>Simulation View</h2>
         <canvas id="simulation-canvas"></canvas>
     </div>
-
     <!-- Live Data -->
     <div id="driving-info">
         <h2>Driving Info</h2>
@@ -51,11 +47,9 @@
         <canvas id="gforce-graph"></canvas>
         <canvas id="speed-graph"></canvas>
     </div>
-
     <!-- JavaScript for Controls and Data -->
     <script src="{{ url_for('static', filename='js/controls.js') }}"></script>
     <script src="{{ url_for('static', filename='js/graphs.js') }}"></script>
-
     <script>
         // Toggle between Manual and Autonomous mode
         function toggleMode() {
@@ -71,17 +65,18 @@
                 autonomousBtn.style.display = 'inline-block';
             }
         }
-
         // Start Autonomous mode
         function startAutonomousMode() {
             // Send request to backend to start autonomous mode
             console.log("Starting autonomous mode...");
         }
-
         // Send control commands (e.g., 'forward', 'left', 'right', 'backward') for manual driving
         function sendControl(direction) {
-            console.log(`Sending ${direction} control...`);
-            // Example of sending control commands via WebSocket or HTTP request
+            let url = '/' + direction;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
