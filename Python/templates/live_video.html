@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Feed</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        #banner { background-color: #333; color: white; padding: 10px; text-align: center; width: 100%; position: fixed; top: 0; left: 0; z-index: 1000; }
+        #camera-stream { width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>Live Video Feed</h1>
+        <nav>
+            <a href="/" style="color: white; text-decoration: none;">Homepage</a> | 
+            <a href="/manual" style="color: white; text-decoration: none;">Manual Mode</a> | 
+            <a href="/auto" style="color: white; text-decoration: none;">Auto Mode</a> | 
+            <a href="/3d" style="color: white; text-decoration: none;">3D Sim</a> | 
+            <a href="/video" style="color: white; text-decoration: none;">Live Video</a> | 
+            <a href="/graphs" style="color: white; text-decoration: none;">Graphs</a>
+        </nav>
+    </div>
+
+    <h2>Live Video Feed</h2>
+    <img id="camera-stream" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+</body>
+</html>

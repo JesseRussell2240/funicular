@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Display</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script> <!-- Correct loader path -->
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script>
+        let scene, camera, renderer, model;
+
+        // Initialize three.js scene
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);  // Increased far clipping plane
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Set background color to white
+            scene.background = new THREE.Color(0xffffff);  // White background
+
+            // Lighting (Ambient Light)
+            const light = new THREE.AmbientLight(0x404040, 1);  // Soft white light with higher intensity
+            scene.add(light);
+
+            // Add a directional light with increased intensity
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5); // Higher intensity for better illumination
+            dirLight.position.set(5, 5, 5);
+            scene.add(dirLight);
+
+            // Load the model
+            const loader = new THREE.GLTFLoader();
+            loader.load('http://192.168.1.222:5000/model/funicular3.glb', (gltf) => {
+                model = gltf.scene;
+                model.scale.set(0.05, 0.05, 0.05);  // Scale the model down further
+
+                // Move the model slightly along the Z axis to ensure it is in front of the camera
+                model.position.z = -5;  // Move further away from camera
+
+                // Explicitly set the model color to red (or any color you'd like) to ensure visibility
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material.color.set(0xff0000); // Set to red color
+                    }
+                });
+
+                scene.add(model);
+            }, undefined, (error) => {
+                console.error('Error loading model:', error);
+            });
+
+            // Adjust the camera's position to better view the scaled model
+            camera.position.z = 10;  // Move camera further from the model
+
+            animate();
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (model) {
+                model.rotation.x += 0.01;
+                model.rotation.y += 0.01;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Start everything
+        init();
+    </script>
+</body>
+</html>

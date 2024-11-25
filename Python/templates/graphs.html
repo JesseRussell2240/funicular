@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #banner {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        #banner nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        main {
+            padding: 80px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .chart-container {
+            width: 80%;
+            max-width: 800px;
+            height: 400px; /* Fixed height for the graph */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>Graphs</h1>
+        <nav>
+            <a href="/">Homepage</a> | 
+            <a href="/manual">Manual Mode</a> | 
+            <a href="/auto">Auto Mode</a> | 
+            <a href="/3d">3D Sim</a> | 
+            <a href="/video">Live Video</a> | 
+            <a href="/graphs">Graphs</a>
+        </nav>
+    </div>
+
+    <main>
+        <div class="chart-container">
+            <h2>Acceleration (X, Y, Z)</h2>
+            <canvas id="accelerationGraph"></canvas>
+        </div>
+        <div class="chart-container">
+            <h2>Velocity (X, Y, Z)</h2>
+            <canvas id="velocityGraph"></canvas>
+        </div>
+    </main>
+
+    <script>
+        const MAX_POINTS = 50; // Maximum number of points to display on the graph
+
+        let accelerationChart, velocityChart;
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/graph_data');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching graph data:', error);
+                return null;
+            }
+        };
+
+	
+	const createGraph = (ctx, datasets, colors) => {
+	    return new Chart(ctx, {
+		type: 'line',
+		data: {
+		    labels: [],
+		    datasets: datasets.map((dataset, index) => ({
+		        label: dataset.label,
+		        data: [],
+		        borderColor: colors[index],
+		        backgroundColor: `rgba(${hexToRgb(colors[index])}, 0.2)`, // Semi-transparent fill
+		        fill: true
+		    }))
+		},
+		options: {
+		    responsive: true,
+		    maintainAspectRatio: false, // Ensure fixed container height
+		    animation: false,
+		    scales: {
+		        x: { title: { display: true, text: 'Time (s)' } },
+		        y: { title: { display: true, text: 'Value' } }
+		    },
+		    plugins: {
+		        legend: {
+		            labels: {
+		                color: '#333' // Optional: customize legend text color
+		            }
+		        }
+		    }
+		}
+	    });
+	};
+
+	// Utility function to convert hex color to RGB
+	const hexToRgb = (hex) => {
+	    // Remove the "#" if it exists
+	    hex = hex.replace(/^#/, '');
+	    let bigint = parseInt(hex, 16);
+	    let r = (bigint >> 16) & 255;
+	    let g = (bigint >> 8) & 255;
+	    let b = bigint & 255;
+
+	    return `${r},${g},${b}`;
+	};
+
+
+
+        const updateGraphData = (chart, newData) => {
+            const time = new Date().toLocaleTimeString();
+
+            chart.data.labels.push(time);
+            chart.data.datasets[0].data.push(newData.x);
+            chart.data.datasets[1].data.push(newData.y);
+            chart.data.datasets[2].data.push(newData.z);
+
+            if (chart.data.labels.length > MAX_POINTS) {
+                chart.data.labels.shift();
+                chart.data.datasets.forEach(dataset => dataset.data.shift());
+            }
+
+            chart.update();
+        };
+
+        const updateGraphs = async () => {
+            const data = await fetchData();
+            if (!data) return;
+
+            const accData = {
+                x: data.acc_data.acc_x,
+                y: data.acc_data.acc_y,
+                z: data.acc_data.acc_z
+            };
+
+            const velData = {
+                x: data.vel_data.vel_x,
+                y: data.vel_data.vel_y,
+                z: data.vel_data.vel_z
+            };
+
+            updateGraphData(accelerationChart, accData);
+            updateGraphData(velocityChart, velData);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const accelerationCtx = document.getElementById('accelerationGraph').getContext('2d');
+            const velocityCtx = document.getElementById('velocityGraph').getContext('2d');
+
+            accelerationChart = createGraph(
+                accelerationCtx,
+                [{ label: 'X' }, { label: 'Y' }, { label: 'Z' }],
+                ['red', 'green', 'blue']
+            );
+
+            velocityChart = createGraph(
+                velocityCtx,
+                [{ label: 'X' }, { label: 'Y' }, { label: 'Z' }],
+                ['orange', 'purple', 'cyan']
+            );
+
+            setInterval(updateGraphs, 1000);
+        });
+    </script>
+</body>
+</html>

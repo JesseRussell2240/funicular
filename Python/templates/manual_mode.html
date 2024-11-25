@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Mode</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        #banner { background-color: #333; color: white; padding: 10px; text-align: center; width: 100%; position: fixed; top: 0; left: 0; z-index: 1000; }
+        .container { display: flex; margin-top: 60px; padding: 20px; width: 100%; }
+        .left { width: 30%; padding: 20px; }
+        .right { width: 70%; padding: 20px; }
+
+        /* Layout for the movement buttons */
+        .movement-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .movement-controls button {
+            width: 60%;
+            height: 60px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .movement-controls button:disabled {
+            background-color: #ccc;
+        }
+
+        /* Position buttons correctly in the grid */
+        #forward {
+            grid-column: 1 / span 2;
+        }
+
+        #stop {
+            grid-column: 1 / span 2;
+        }
+
+        #backward {
+            grid-column: 1 / span 2;
+        }
+
+        #left {
+            grid-row: 2 / span 1;
+            grid-column: 1;
+        }
+
+        #right {
+            grid-row: 2 / span 1;
+            grid-column: 2;
+        }
+
+        /* Bluetooth controls */
+        #bluetooth-controls button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #live-camera { text-align: center; }
+        #camera-stream { width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>Manual Mode</h1>
+        <nav>
+            <a href="/" style="color: white; text-decoration: none;">Homepage</a> | 
+            <a href="/manual" style="color: white; text-decoration: none;">Manual Mode</a> | 
+            <a href="/auto" style="color: white; text-decoration: none;">Auto Mode</a> | 
+            <a href="/3d" style="color: white; text-decoration: none;">3D Sim</a> | 
+            <a href="/video" style="color: white; text-decoration: none;">Live Video</a> | 
+            <a href="/graphs" style="color: white; text-decoration: none;">Graphs</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="left">
+            <h3>Movement Controls</h3>
+            <div class="movement-controls">
+                <!-- Forward button -->
+                <button id="forward" onclick="move('forward')">Forward</button>
+                <!-- Stop button -->
+                <button id="stop" onclick="move('stop')">Stop</button>
+                <!-- Backward button -->
+                <button id="backward" onclick="move('backward')">Reverse</button>
+                <!-- Left button -->
+                <button id="left" onclick="move('left')">Left</button>
+                <!-- Right button -->
+                <button id="right" onclick="move('right')">Right</button>
+            </div>
+
+            <h3>Bluetooth Controls</h3>
+            <div id="bluetooth-controls">
+                <button id="bluetooth-enable" onclick="enableBluetooth()">Enable Bluetooth</button>
+                <button id="bluetooth-disable" onclick="disableBluetooth()">Disable Bluetooth</button>
+            </div>
+        </div>
+
+        <div class="right">
+            <div id="live-camera">
+                <h2>Live Camera Feed</h2>
+                <img id="camera-stream" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bluetoothEnabled = false;
+
+        function enableBluetooth() {
+            bluetoothEnabled = true;
+            document.getElementById("forward").disabled = true;
+            document.getElementById("backward").disabled = true;
+            document.getElementById("left").disabled = true;
+            document.getElementById("right").disabled = true;
+            document.getElementById("stop").disabled = true;
+        }
+
+        function disableBluetooth() {
+            bluetoothEnabled = false;
+            document.getElementById("forward").disabled = false;
+            document.getElementById("backward").disabled = false;
+            document.getElementById("left").disabled = false;
+            document.getElementById("right").disabled = false;
+            document.getElementById("stop").disabled = false;
+        }
+
+        function move(direction) {
+            if (bluetoothEnabled) return;
+            // Implement the logic to send movement commands to the car
+            console.log(`Moving ${direction}`);
+        }
+    </script>
+</body>
+</html>

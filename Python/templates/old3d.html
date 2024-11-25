@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Display</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        #banner { background-color: #333; color: white; padding: 10px; text-align: center; width: 100%; position: fixed; top: 0; left: 0; z-index: 1000; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>3D Model Display</h1>
+        <nav>
+            <a href="/" style="color: white; text-decoration: none;">Homepage</a> | 
+            <a href="/manual" style="color: white; text-decoration: none;">Manual Mode</a> | 
+            <a href="/auto" style="color: white; text-decoration: none;">Auto Mode</a> | 
+            <a href="/3d" style="color: white; text-decoration: none;">3D Sim</a> | 
+            <a href="/video" style="color: white; text-decoration: none;">Live Video</a> | 
+            <a href="/graphs" style="color: white; text-decoration: none;">Graphs</a>
+        </nav>
+    </div>
+
+    <script>
+        let scene, camera, renderer, model;
+
+        // Variables for smoothing
+        let gyroData = { gyro_x: 0, gyro_y: 0, gyro_z: 0 };
+        const smoothingFactor = 0.1;  // Higher value = more smoothing
+        const scaleFactor = 100;  // Controls rotation sensitivity
+
+        function init() {
+            // Initialize Three.js scene, camera, and renderer
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            scene.background = new THREE.Color(0xffffff);
+
+            // Add lights to the scene
+            const light = new THREE.AmbientLight(0x404040, 1);
+            scene.add(light);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(5, 5, 5);
+            scene.add(dirLight);
+
+            // Load 3D model
+            const loader = new THREE.GLTFLoader();
+            loader.load('/static/models/funicular3.glb', (gltf) => { model = gltf.scene;
+    model.scale.set(0.05, 0.05, 0.05);
+    model.position.z = -5;
+    scene.add(model);
+}, undefined, (error) => {
+    console.error('Error loading model:', error);
+});
+
+
+            // Set the camera position
+            camera.position.z = 10;
+
+            // Start the animation loop
+            animate();
+        }
+
+        // Function to fetch gyroscope data from the Flask server
+        async function fetchGyroData() {
+            try {
+                const response = await fetch('/sensor_data');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching gyroscope data:', error);
+                return null;
+            }
+        }
+
+        // Function to smooth and update the model's orientation based on gyroscope data
+        function updateModelOrientation(gyroData) {
+            if (model && gyroData) {
+                // Smooth the new sensor data (exponential moving average)
+                gyroData.gyro_x = gyroData.gyro_x * (1 - smoothingFactor) + gyroData.gyro_x * smoothingFactor;
+                gyroData.gyro_y = gyroData.gyro_y * (1 - smoothingFactor) + gyroData.gyro_y * smoothingFactor;
+                gyroData.gyro_z = gyroData.gyro_z * (1 - smoothingFactor) + gyroData.gyro_z * smoothingFactor;
+
+                // Apply rotations based on gyroscope data and scaling factor
+                model.rotation.x += gyroData.gyro_x * scaleFactor;  // Scale the rotation for better visualization
+                model.rotation.y += gyroData.gyro_y * scaleFactor;
+                model.rotation.z += gyroData.gyro_z * scaleFactor;
+            }
+        }
+
+        // Animation loop
+        async function animate() {
+            requestAnimationFrame(animate);
+
+            // Fetch gyroscope data and update model orientation
+            const gyroData = await fetchGyroData();
+            if (gyroData) {
+                updateModelOrientation(gyroData);
+            }
+
+            // Render the scene
+            renderer.render(scene, camera);
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>

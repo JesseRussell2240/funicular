@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { display: flex; justify-content: space-between; padding: 20px; }
+        .left { width: 45%; }
+        .right { width: 45%; }
+        #banner { background-color: #333; color: white; padding: 10px; text-align: center; }
+        .links { margin-top: 20px; }
+        .video-container { margin-top: 20px; }
+        iframe { width: 100%; height: 300px; }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>Funicular</h1>
+        <nav>
+            <a href="/" style="color: white; text-decoration: none;">Homepage</a> | 
+            <a href="/manual" style="color: white; text-decoration: none;">Manual Mode</a> | 
+            <a href="/auto" style="color: white; text-decoration: none;">Auto Mode</a> | 
+            <a href="/3d" style="color: white; text-decoration: none;">3D Sim</a> | 
+            <a href="/video" style="color: white; text-decoration: none;">Live Video</a> | 
+            <a href="/graphs" style="color: white; text-decoration: none;">Graphs</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <!-- Left: Description and links -->
+        <div class="left">
+            <h2>Description</h2>
+            <p>This project controls a remote vehicle and provides live video, manual and autonomous control, and 3D simulations. This project was completed by Jesse Russell and Hayden Foster.</p>
+            <div class="links">
+                <a href="https://github.com/JesseRussell2240/funicular" target="_blank">Funicular GitHub Repo!</a><br>
+                <a href="#instructions">Basic Instructions TO BE COMPLETED LATER</a>
+            </div>
+        </div>
+
+        <!-- Right: YouTube video and creator's photo -->
+        <div class="right">
+            <div class="video-container">
+                <h3>YouTube Video</h3>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/DKF2-zCNJ0A?si=UGyL5LYjDVMKE7dB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div>
+                <h3>Meet the Creators</h3>
+                <img src="https://www.ricbit.com/uploaded_images/lena-713374.jpg" alt="Creator's Photo">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

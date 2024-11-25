@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Mode</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        #banner { background-color: #333; color: white; padding: 10px; text-align: center; width: 100%; position: fixed; top: 0; left: 0; z-index: 1000; }
+        .container { display: flex; margin-top: 60px; padding: 20px; width: 100%; }
+        .left { width: 30%; padding: 20px; }
+        .right { width: 70%; padding: 20px; }
+        button { width: 100%; margin: 10px 0; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        #live-camera { text-align: center; }
+        #camera-stream { width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div id="banner">
+        <h1>Auto Mode</h1>
+        <nav>
+            <a href="/" style="color: white; text-decoration: none;">Homepage</a> | 
+            <a href="/manual" style="color: white; text-decoration: none;">Manual Mode</a> | 
+            <a href="/auto" style="color: white; text-decoration: none;">Auto Mode</a> | 
+            <a href="/3d" style="color: white; text-decoration: none;">3D Sim</a> | 
+            <a href="/video" style="color: white; text-decoration: none;">Live Video</a> | 
+            <a href="/graphs" style="color: white; text-decoration: none;">Graphs</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="left">
+            <h3>Auto Mode Controls</h3>
+		<button id="start-autonomous">Start Autonomous Mode</button>
+		<button id="stop-autonomous">Stop Autonomous Mode</button>		
+        </div>
+
+        <div class="right">
+            <div id="live-camera">
+                <h2>Live Camera Feed</h2>
+                <img id="camera-stream" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+            </div>
+        </div>
+    </div>
+
+
+	<script>
+	    document.getElementById('start-autonomous').addEventListener('click', function() {
+		fetch('/control/start_autonomous')
+		    .then(response => {
+		        if (response.ok) {
+		            return response.text();
+		        }
+		        throw new Error('Network response was not ok.');
+		    })
+		    .then(data => {
+		        console.log(data); // Handle success
+		        alert(data); // Show success message
+		    })
+		    .catch(error => {
+		        console.error('There was a problem with the fetch operation:', error);
+		        alert('Error: ' + error.message); // Show error message
+		    });
+	    });
+
+	    document.getElementById('stop-autonomous').addEventListener('click', function() {
+		fetch('/control/stop_autonomous')
+		    .then(response => {
+		        if (response.ok) {
+		            return response.text();
+		        }
+		        throw new Error('Network response was not ok.');
+		    })
+		    .then(data => {
+		        console.log(data); // Handle success
+		        alert(data); // Show success message
+		    })
+		    .catch(error => {
+		        console.error('There was a problem with the fetch operation:', error);
+		        alert('Error: ' + error.message); // Show error message
+		    });
+	    });
+	</script>
+</body>
+</html>
