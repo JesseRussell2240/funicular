@@ -1,46 +1,51 @@
 import cv2
 import numpy as np
 import time
-from ultralytics import YOLO
+import cv2
+import sys
+
+#from ultralytics import YOLO
 
 # Load your trained YOLO model
-model = YOLO("best.pt")
+#model = YOLO("best.pt")
 
 # Initialize global variables
 steering_angle = 30  # Start with a neutral steering angle
 
+
+
+
 def detect_cones(frame):
-    original_height, original_width = frame.shape[:2]  # Get original frame dimensions
+    """
+    Process the frame and invoke the detection pipeline.
+    This function will start the detection from detection.py.
+    """
+    # Convert the frame to the required format (if necessary)
+    # Depending on how detection.py expects the frame, you may need to adjust the frame format
+    # For example, if GStreamerDetectionApp expects the frame in a specific format
+    # or needs to be passed via a buffer, you can handle that here.
 
-    # Resize frame to match YOLO input size (640x640)
-    frame_resized = cv2.resize(frame, (640, 640))  # Resize frame for YOLO input
-    frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)  # Convert to RGB for YOLO
-    results = model(frame_rgb)  # Perform detection on the RGB image
+    # For now, let's simulate sending the frame into the pipeline. If detection.py handles GStreamer
+    # or other complex workflows, ensure it works with the callback properly.
     
-    for result in results:
-        if hasattr(result, 'boxes'):  # Ensure the result has boxes
-            for box in result.boxes:
-                x1, y1, x2, y2 = map(int, box.xyxy[0])  # Get bounding box coordinates
+    sys.argv = [
+        "script.py",  # Name of the script (you can leave it as "script.py" or as whatever the script name is)
+        "--hef-path", "/home/rpi/Desktop/Beta/Python/hailo-rpi5-examples/resources/funicular2.hef",
+        "--labels-json", "/home/rpi/Desktop/hailo-rpi5-examples/resources/cones.json",
+        "--use-frame"  # Adding the --use-frame argument
+    ]
 
-                # Rescale bounding box coordinates back to the original frame size
-                x1 = int(x1 * original_width / 640)
-                y1 = int(y1 * original_height / 640)
-                x2 = int(x2 * original_width / 640)
-                y2 = int(y2 * original_height / 640)
+    # Initialize the callback class
+    user_data = user_app_callback_class()
 
-                confidence = float(box.conf)  # Get confidence score
-                class_index = int(box.cls)  # Get class index
-                label = model.names[class_index]  # Get label name
+    # Initialize the detection pipeline from detection.py
+    app = GStreamerDetectionApp(app_callback, user_data)
+    
+    # Run the pipeline to detect cones (this is assuming app.run() handles streaming and callbacks)
+    app.run()  # Running the detection pipeline
 
-                # Draw bounding box on the original frame
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(frame, f"{label} {confidence:.2f}", (x1, y1 - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        else:
-            print("No bounding boxes found in the result")
-
-    return frame  # Return the processed frame
-
+    # For illustration, let's just return the frame (you could process it further here)
+    return frame
 
 
 
