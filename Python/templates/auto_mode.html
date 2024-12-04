@@ -38,7 +38,9 @@
         <div class="right">
             <div id="live-camera">
                 <h2>Live Camera Feed</h2>
-                <img id="camera-stream" src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
+                <img id="camera-stream" src="" alt="Live Camera Feed">
+
+
             </div>
         </div>
     </div>
@@ -46,40 +48,35 @@
 
 	<script>
 	    document.getElementById('start-autonomous').addEventListener('click', function() {
-		fetch('/control/start_autonomous')
-		    .then(response => {
-		        if (response.ok) {
-		            return response.text();
-		        }
-		        throw new Error('Network response was not ok.');
+		    fetch('/control/start_autonomous', {
+			method: 'POST'  // Specify POST method
 		    })
+		    .then(response => response.json())  // Handle the response as JSON
 		    .then(data => {
-		        console.log(data); // Handle success
-		        alert(data); // Show success message
+			console.log(data); // Handle success
+			alert(data.message); // Show success message from JSON
 		    })
 		    .catch(error => {
-		        console.error('There was a problem with the fetch operation:', error);
-		        alert('Error: ' + error.message); // Show error message
+			console.error('There was a problem with the fetch operation:', error);
+			alert('Error: ' + error.message); // Show error message
 		    });
-	    });
+		});
 
-	    document.getElementById('stop-autonomous').addEventListener('click', function() {
-		fetch('/control/stop_autonomous')
-		    .then(response => {
-		        if (response.ok) {
-		            return response.text();
-		        }
-		        throw new Error('Network response was not ok.');
+		document.getElementById('stop-autonomous').addEventListener('click', function() {
+		    fetch('/control/stop_autonomous', {
+			method: 'POST'  // Specify POST method
 		    })
+		    .then(response => response.json())  // Handle the response as JSON
 		    .then(data => {
-		        console.log(data); // Handle success
-		        alert(data); // Show success message
+			console.log(data); // Handle success
+			alert(data.message); // Show success message from JSON
 		    })
 		    .catch(error => {
-		        console.error('There was a problem with the fetch operation:', error);
-		        alert('Error: ' + error.message); // Show error message
+			console.error('There was a problem with the fetch operation:', error);
+			alert('Error: ' + error.message); // Show error message
 		    });
-	    });
+		});
+
 	</script>
 </body>
 </html>
