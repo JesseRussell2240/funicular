@@ -1,5 +1,8 @@
 #include "LimitSwitch.h"
+#include "DriveMotor.h"
+//#include "UART3.h"
 
+volatile uint8_t limitSwitchTriggered = 0;
 
 void LimitSwitch_Init(void) {
 	// Enable GPIO Clock
@@ -9,8 +12,8 @@ void LimitSwitch_Init(void) {
 	MODER_SET(C,5,MODER_IN);
 	
 	// GPIO Push-Pull:
-	PUPDR_SET(C, 6, PUPDR_NP); // No Pull
-	PUPDR_SET(C, 5, PUPDR_NP); // No Pull
+	PUPDR_SET(C, 6, PUPDR_PU); // Pull Up
+	PUPDR_SET(C, 5, PUPDR_PU); // Pull Up
 	
 	EXTI->IMR |= EXTI_IMR_IM6; // Enable Interrupt
 	EXTI->IMR |= EXTI_IMR_IM5; // Enable Interrupt
@@ -36,19 +39,23 @@ void LimitSwitch_Init(void) {
 	
 	// Configure NVIC for EXTI events on pin 10-15
 	// Set its priority to 0 (next highest to NMIs)
+	NVIC_SetPriority( EXTI9_5_IRQn, 0);
 	NVIC_EnableIRQ( EXTI9_5_IRQn );
-	NVIC_SetPriority( EXTI9_5_IRQn, 0 );
 	
 }
 
 void EXTI9_5_IRQHandler(void) {
 
 	// STOP STEPPER
-
+	UART3printf("Limit Interupt");
+	
+  SetMotor(motorTurning, DIR_STOP, 0 );
+  limitSwitchTriggered = 1;
 	// Cleared flag by writing 1
+	
 	EXTI->PR |= EXTI_PR_PIF6;
 	EXTI->PR |= EXTI_PR_PIF5;
-	UARTprintf("INTERRUPPPPPTED");
+	
 	
 	
 }

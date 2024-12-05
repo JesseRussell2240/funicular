@@ -6,30 +6,27 @@
 
 #include "DriveMotor.h"
 #include "utility.h"
-#include "UART3.h"
+//#include "UART3.h"
 
 // Drive Motor Configuration Parameters
-// - Motor Speed Control Pins:
-//    Left Front Motor	            PC10 
-//    Right Front Motor             PC11
 
-// - Motor Direction Control Pins:
-//    Left Front Motor Forward (A)	PA15
-//    Left Front Motor Reverse (B)  PD2
-//    Right Front Motor Forward (A) PC3 used to be stepper 
-//    Right Front Motor Reverse (B) PC2 used to be stepper 
+//////////Turning Motor///////////////
+// PC 2 +
+// PC 3 -
+// PC 10 PWM
 
-//    Left Rear Motor	             PC12 
-//    Right Rear Motor             PC9
 
-//    Left Rear Motor Forward (A)	 PB12
-//    Left Rear Motor Reverse (B)  PC4
-//    Right Rear Motor Forward (A) PC1 used to be stepper 
-//    Right Rear Motor Reverse (B) PC0 used to be stepper 
-//
-//	  Gun Control
-//    Gun Forward (A) PA5  these used to be DAC
-//    Gun Backward (B) PC13 ill never need this but whatever
+//////////Rear Left///////////////////
+// PB 12 +
+// PC 4  -
+// PC 11 PWM
+
+//////////Rear Right
+// PC 1 +
+// PC 0 -
+// PC 12 PWM
+
+
 //
 // - Direction Control Truth Table
 //     STOP   FWD	RWD   UNDEFINED
@@ -41,62 +38,56 @@ void DriveMotor_Init(void)
 {
 	//CLEAR_BITS(RTC->TAFCR, RTC_TAFCR_PC13MODE);
 	
-	//	 CLEAR_BITS(RTC->TAFCR, RTC_TAFCR_PC14MODE);
-	//	 CLEAR_BITS(RTC->TAFCR, RTC_TAFCR_PC15MODE);
+
 	SET_BITS(RTC->TAFCR, RTC_TAFCR_PC13MODE);
 		 
 	
 	// Enable GPIO Clock
 		 ENABLE_CLOCKx(C);
-     ENABLE_CLOCKx(D);
 	   ENABLE_CLOCKx(B);
-		 ENABLE_CLOCKx(A);
+
 	
 
 	///////////////////////////////////////////////////////////////////
-	////////////////FRONT MOTORS INIT//////////////////////////////////
-	//////////////////////////////////////////////////////////////////
+	////////////////Turning MOTORS INIT////////////////////////////////
+	///////////////////////////////////////////////////////////////////
 	
 	// Configure Motor Control Pins 
 	//  For Direction Control, just ordinary GPIO configurations
 	//    MODE = Output
-		 MODER_SET(A,15,MODER_GP);
-		 MODER_SET(D,2,MODER_GP);
+		
 		 MODER_SET(C,3,MODER_GP);
 		 MODER_SET(C,2,MODER_GP);
 	
 	//    Output Type = Push Pull
-		GPIO_OTYPER_SET(A,15,OTYPER_PP);
-  	GPIO_OTYPER_SET(D,2,OTYPER_PP);
+
 	  GPIO_OTYPER_SET(C,3,OTYPER_PP);
 	  GPIO_OTYPER_SET(C,2,OTYPER_PP);
 	
 	//    Pull-up / Pull-down = No Pull
-		PUPDR_SET(A,15,PUPDR_NP);
-		PUPDR_SET(D,2,PUPDR_NP);
+	
 		PUPDR_SET(C,3,PUPDR_NP);
 		PUPDR_SET(C,2,PUPDR_NP);
 		
 	//    Initial Output Value should be set to 0 (STOP by default)
-		CLEAR_BITS( GPIOA->ODR, GPIO_ODR_15);
-		CLEAR_BITS( GPIOD->ODR, GPIO_ODR_2);
+		
 		CLEAR_BITS( GPIOC->ODR, GPIO_ODR_3);
 		CLEAR_BITS( GPIOC->ODR, GPIO_ODR_2);
 		
 	//  For Speed Control, connect TIM8 channels to PC10 and PC11 with the following configurations
 	//	  MODE = Alternative Function 4
+
 		MODER_SET(C,10,MODER_AF);
-		MODER_SET(C,11,MODER_AF);
 		GPIO_AFRH(C,2,4UL);
-		GPIO_AFRH(C,3,4UL);
+
 		
 	//    Output Type = Push Pull
-		GPIO_OTYPER_SET(C,10,OTYPER_PP);
-  	GPIO_OTYPER_SET(C,11,OTYPER_PP);
+
+  	GPIO_OTYPER_SET(C,10,OTYPER_PP);
 		
 	//    Pull-up / Pull-down = No Pull
+	
 		PUPDR_SET(C,10,PUPDR_NP);
-		PUPDR_SET(C,11,PUPDR_NP);
 		
 	//  PC10 will be connected to TIM8 channel 1N (complemented output)
 	//  PC11 will be connected to TIM8 channel 2N (complemented output)
@@ -137,54 +128,21 @@ void DriveMotor_Init(void)
 	//  For Speed Control, connect TIM8 channels to PC9 and PC12 with the following configurations
 	//	  MODE = Alternative Function 4
 		MODER_SET(C,12,MODER_AF);
-		MODER_SET(C,9,MODER_AF);
+		MODER_SET(C,11,MODER_AF);
 		GPIO_AFRH(C,4,4UL);
-		GPIO_AFRH(C,1,4UL);
+		GPIO_AFRH(C,3,4UL);
 		
 	//    Output Type = Push Pull
 		GPIO_OTYPER_SET(C,12,OTYPER_PP);
-  	GPIO_OTYPER_SET(C,9,OTYPER_PP);
+  	GPIO_OTYPER_SET(C,11,OTYPER_PP);
 		
 	//    Pull-up / Pull-down = No Pull
 		PUPDR_SET(C,12,PUPDR_NP);
-		PUPDR_SET(C,9,PUPDR_NP);
+		PUPDR_SET(C,11,PUPDR_NP);
 		
 		
 		
-	//////////////////////////////////////////////////////////////////
-	////////////////Gun MOTOR INIT///////////////////////////////////
-	//////////////////////////////////////////////////////////////////
-	
-	// Configure Motor Control Pins 
-	//  For Direction Control, just ordinary GPIO configurations
-	//    MODE = Output
-		 MODER_SET(A,5,MODER_GP);
-		 MODER_SET(C,13,MODER_GP);
-	
-	//    Output Type = Push Pull
-		GPIO_OTYPER_SET(A,5,OTYPER_PP);
-  	GPIO_OTYPER_SET(C,13,OTYPER_PP);
-	 
-	//    Pull-up / Pull-down = No Pull
-		PUPDR_SET(A,5,PUPDR_NP);
-		PUPDR_SET(C,13,PUPDR_NP);
-	
-	//    Initial Output Value should be set to 0 (STOP by default)
-		CLEAR_BITS( GPIOA->ODR, GPIO_ODR_5);
-		CLEAR_BITS( GPIOC->ODR, GPIO_ODR_13);
-			
-		Delay_ms(10);
-		
-		MODER_SET(A, 4, MODER_AF);
-   
-    // 3. Set the AFR to AF1 for PC0 to PC3                            
-    GPIO_AFRL(A,4,2UL);
-   
-    // 4. Set the OTYPER to Push-Pull
-    GPIO_OTYPER_SET(A, 4, OTYPER_PP);
-   
-    // 5. Set the PUPDR to no pull
-    PUPDR_SET(A, 4, 0);
+
 		
 
 		
@@ -215,37 +173,7 @@ void DriveMotor_Init(void)
 	// 6. Set TIM8 main output enabled
 	  SET_BITS(TIM8->BDTR, TIM_BDTR_MOE);
 		
-	///////////////////////////////////////////////////////////////////
-	////////////////Firing//// PWM////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
 
-
-
-
-    // Configure TIM1
-    // 1. Turn on TIM1 by feeding in the APB clock (set RCC_APB2ENR_TIM1EN in RCC->APB2ENR)
-    SET_BITS(RCC->APB1ENR, RCC_APB1ENR_TIM3EN);
-    // 2. Program the prescaler (PSC) to ensure TIM1 counts at 1us
-    TIM3->PSC = SystemCoreClock / 1000000 - 1;
-    // 3. Set TIM1 to Upcounting (no need to do it, because TIM1 only knows upcounting...) ***OPTIONAL***
-                                //set bit 4 to 0 to ensure upcounting'
-                                
-    CLEAR_BITS(TIM3->CR1, TIM_CR1_CMS);  // Ensure upcounting
-                                //set alighnment ot edge align piro to setting to upcount
-    // 4. Set the ARR to 20000 us period
-    TIM3->ARR = 1000 - 1;
-    // 5. Enable TIM1 ARR Preload (ARPE flag on CR1)
-    SET_BITS(TIM3->CR1, TIM_CR1_ARPE);
-    // 6. Enable TIM1 main output, so to make it available to the PWM OC (MOE flag on BDTR)
-    SET_BITS(TIM3->BDTR, TIM_BDTR_MOE);
-
-    // Configure CH1 to CH4 of TIM1 for PWM OC mode
-		// Servo 1 (TIM1_CH2)
-    TIM3->CCMR1 |= (0x6 << TIM_CCMR1_OC2M_Pos);
-    SET_BITS(TIM3->CCMR1, TIM_CCMR1_OC2PE);
-    SET_BITS(TIM3->CCER, TIM_CCER_CC2E);
-    CLEAR_BITS(TIM3->CCER, TIM_CCER_CC2P);
-		CLEAR_BITS(TIM3->CCR2, TIM_CCR2_CCR2);
 		
 	
 
@@ -327,27 +255,7 @@ CLEAR_BITS(TIM8->CCER, TIM_CCER_CC3NP);
 CLEAR_BITS(TIM8->CCR3, TIM_CCR3_CCR3);
 
 
-  ///////////////////////////////////////////////////////////////////
-	////////////////CHANNEL 4/////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////
-	
-	
-// Configure CH4 (Complementary) of TIM8 for Right Wheel PWM output compare mode
-// Select PWM mode 1 for TIM8 channel 4
-TIM8->CCMR2 |= (0x6 << TIM_CCMR2_OC4M_Pos);    /////////////////////
-                                               ////////////////////PWM Not working
-// Enable output compare preload on channel 4  /////////////////////
-SET_BITS(TIM8->CCMR2, TIM_CCMR2_OC4PE); 
-
-// Enable the COMPLEMENTARY output channel (CH4N)
-SET_BITS(TIM8->CCER, TIM_CCER_CC4E);
-
-// Make CH4N active HI (standard polarity)
-CLEAR_BITS(TIM8->CCER, TIM_CCER_CC4NP);
-
-// Set the CH4N initial PWM ON-time to 0
-CLEAR_BITS(TIM8->CCR4, TIM_CCR4_CCR4);
-
+ 
 
 	///////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////
@@ -361,10 +269,10 @@ CLEAR_BITS(TIM8->CCR4, TIM_CCR4_CCR4);
 		// Set CEN in TIM8 CR1
 	 SET_BITS( TIM8 -> CR1, TIM_CR1_CEN );
 	
-	 SET_BITS(TIM3->EGR, TIM_EGR_UG);
-	 SET_BITS(TIM3->CR1, TIM_CR1_CEN);
 	
 }
+
+
 
 
 void SetMotorSpeed( uint8_t motor, uint16_t dutyCycle )
@@ -382,21 +290,18 @@ void SetMotorSpeed( uint8_t motor, uint16_t dutyCycle )
 	dutyCycle *= 10;
 	
 	 switch (motor) {
-        case motorFrontLeft:
+       
+        case motorTurning:
             TIM8->CCR1 = dutyCycle;
             break;
-        case motorFrontRight:
-            TIM8->CCR2 = dutyCycle;
-            break;
 				 case motorRears:
+            TIM8->CCR2 = dutyCycle;
             TIM8->CCR3 = dutyCycle;
-            TIM8->CCR4 = dutyCycle;
-            break;
-				case motorTurning:
-            TIM3->CCR2 = (dutyCycle);
             break;
   }
 }	
+
+
 
 
 
@@ -413,34 +318,34 @@ void SetMotorDir( uint8_t motor, uint8_t dir )
 						
 				case motorRears:
             
-            if (dir == DIR_FWD) {////////Rear Left Motor Forward
-							//UART3printf("yog");
+            if (dir == DIR_FWD) {////////Back Wheels Motor Forward
+						
               SET_BITS(GPIOB->ODR, GPIO_ODR_12);
 							CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4); 
 							SET_BITS(GPIOC->ODR, GPIO_ODR_1);
 							CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
-							//UART3printf("yogirt");
+							
 							 
 							
-            } else if (dir == DIR_BWD) {////////Rear Left Motor Backward
+            } else if (dir == DIR_BWD) {////////Back Wheels Motor Backward
                CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);  
 							 SET_BITS(GPIOC->ODR, GPIO_ODR_4);  
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
 							 SET_BITS(GPIOC->ODR, GPIO_ODR_0);
-							 //UART3printf("neeeheh");
 							
-            } else if (dir == DIR_STOP){////////Rear Left Motor Stop
+							
+            } else if (dir == DIR_STOP){////////Back Wheels Motor Stop
                CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
 						 	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
 							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
-							// UART3printf("hello");
+							
 							
             } else {
-              // CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
-						 	// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
-							// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
-							// CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
+               CLEAR_BITS(GPIOB->ODR, GPIO_ODR_12);
+						 	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_4);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_1);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_0);
 						}
             break;
 						
@@ -448,46 +353,85 @@ void SetMotorDir( uint8_t motor, uint8_t dir )
 					case motorTurning:
             
             if (dir == DIR_RIGHT) {
-               SET_BITS(GPIOA->ODR, GPIO_ODR_5);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);
+               SET_BITS(GPIOC->ODR, GPIO_ODR_3);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
 							
-						} else if (dir == DIR_LEFT) {////////Rear Right Motor Backward
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
-							 SET_BITS(GPIOC->ODR, GPIO_ODR_13);
+							
+						} else if (dir == DIR_LEFT) {
+               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
+							 SET_BITS(GPIOC->ODR, GPIO_ODR_2);
+							
+							
 
             } else if (dir == DIR_STOP){
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);
+               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
 							
-            } else {
-               CLEAR_BITS(GPIOA->ODR, GPIO_ODR_5);
-							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_13);
+            } else { //Stop
+               CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
+							 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
             }
             break;
-     //   default:
-            
-							// CLEAR_BITS(GPIOA->ODR, GPIO_ODR_15);
-						 	// CLEAR_BITS(GPIOD->ODR, GPIO_ODR_2);
-						//	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_3);
-						//	 CLEAR_BITS(GPIOC->ODR, GPIO_ODR_2);
-           // break;
+    
     }
 }
 
 void SetMotor( uint8_t motor, uint8_t dir, uint16_t dutyCycle )
 {
 	
-//	SweepMotor(motor, dutyCycle);
 	SetMotorDir( motor, dir );
 	SetMotorSpeed(motor, dutyCycle );
+	
+	if (TIM2->CNT > 33){
+							
+				//Left Turning Signal On
+				SET_BITS(GPIOB->ODR, GPIO_ODR_1);	
+				CLEAR_BITS(GPIOB->ODR, GPIO_ODR_0);
+							
+		}
+						
+		else if (TIM2->CNT < 27) {
+							
+				//Right Turning Signal On
+				SET_BITS(GPIOB->ODR, GPIO_ODR_0);	
+				CLEAR_BITS(GPIOB->ODR, GPIO_ODR_1);
+							
+		}
+						
+		else {
+					CLEAR_BITS(GPIOB->ODR, GPIO_ODR_1);
+					CLEAR_BITS(GPIOB->ODR, GPIO_ODR_0);
+		}
 }
 
+
+void TurnMotor(uint16_t turningAngle )
+{
+	
+	
+	while (TIM2->CNT != (turningAngle)){
+		
+	if (turningAngle > TIM2->CNT){
+		
+	SetMotorDir( motorTurning, DIR_RIGHT );
+	SetMotorSpeed(motorTurning, 100 );
+	}
+	else if (turningAngle < TIM2->CNT){
+		
+	SetMotorDir( motorTurning, DIR_LEFT );
+	SetMotorSpeed(motorTurning, 100 );
+	}
+	else{
+	SetMotor(motorTurning, DIR_STOP, 0 );
+	}
+	
+	}
+	SetMotor(motorTurning, DIR_STOP, 0 );
+}
 
 
 void StopAllMotors()
 {
-	  SetMotor(motorFrontLeft, DIR_STOP, 0);
-		SetMotor(motorFrontRight, DIR_STOP, 0 );
 		SetMotor(motorRears, DIR_STOP, 0);
 		SetMotor(motorTurning, DIR_STOP, 0);  
 }

@@ -1,13 +1,17 @@
-/*#include "UART3.h"
+#include "UART3.h"
 #include "utility.h"
 #include "stm32f303xe.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include "DriveMotor.h"
+#include "Homing.h"
 
 #define MAX_UART3_BUFSIZ 60
 
 char rxBuffer[MAX_UART3_BUFSIZ];  // Buffer to store the incoming string
 static volatile uint8_t rxIndex = 0;     // Index to track the buffer position
+
 
 
 void UART3_Init(void){
@@ -52,10 +56,11 @@ void UART3_Init(void){
 
     // Enable USART3 interrupt in NVIC
     NVIC_EnableIRQ(USART3_IRQn);
+		NVIC_SetPriority( EXTI9_5_IRQn, 1);
 }
 
 // Interrupt handler for USART3
-void USART3_IRQHandler(void) {
+void USART3_IRQHandler(void) {               
     if (USART3->ISR & USART_ISR_RXNE) {
         // Read the received data
         char receivedChar = USART3->RDR;
@@ -69,14 +74,44 @@ void USART3_IRQHandler(void) {
         if (receivedChar == '\n' || receivedChar == '\r') {
             rxBuffer[rxIndex] = '\0';  // Null-terminate the string
 
-            // Process the complete string (e.g., print it)
-            UART3printf("Received: %s\n", rxBuffer);
+            char received_direction;            
+            uint16_t received_dutyCycle = 0;
+            uint16_t received_turning = 0;
 
+            // Process the complete string 
+            sscanf(rxBuffer, " %c %hu %hu", &received_direction, &received_dutyCycle, &received_turning); 
+
+            // Check if '*' is received to initiate homing
+            if (received_direction == '*') {
+                
+							  SetMotor(motorRears, DIR_STOP, 0);
+								UART3printf("%d", fullTurnValue);
+							
+            } else {
+                // Compare the direction and handle accordingly
+                if (received_direction == '+') {
+                    SetMotor(motorRears, DIR_FWD, received_dutyCycle);
+                } else if (received_direction == '-') {
+                    SetMotor(motorRears, DIR_BWD, received_dutyCycle);
+                } else if (received_direction == '|') {
+                    SetMotor(motorRears, DIR_STOP, 0);
+                } else {
+                    
+                }
+
+                // Handle turning function
+                TurnMotor(received_turning);
+                
+                // Handshake with the Raspberry Pi to indicate readiness for the next string
+                UART3printf("1\n");
+            }
+		
             // Reset the buffer index for the next string
-            rxIndex = 0;
+            rxIndex = 0;					
         }
     }
 }
+
 
 void UART3putc(char thisChar){
     // Wait until the Transmit Data Register (TDR) is empty
@@ -114,4 +149,3 @@ char UART3getcNB(void) {
     else
         return '\0';
 }
-*/

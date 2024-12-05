@@ -21,7 +21,10 @@
 void Encoder_Init(void);
 void TIM2_IRQHandler( void );
 
-void encoderDelta(void);
+
+
+extern volatile int8_t direction;
+
 
 // Helper Function for Debugging
 uint32_t getEncoderCHValue( uint8_t enc );

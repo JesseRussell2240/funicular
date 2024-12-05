@@ -14,5 +14,6 @@ char UART3getc(void);
 void UART3printf( char *fmt, ... );
 char UART3getcNB(void);
 void USART3_IRQHandler(void);
+void ProcessReceivedString(char *input);
 
 #endif
