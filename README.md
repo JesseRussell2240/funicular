@@ -128,7 +128,8 @@ TO DO
 4. clean up GIT
 5. Bluetooth functionallity re configuring
 6. Linkedin video
-7. 
+7. Boot config for powerup booting Venv and server
+8. 
 
 
 **--------------------------------------------------------------------------------------------------------------------------<br>
