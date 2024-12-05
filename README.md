@@ -121,6 +121,16 @@ PB11: UART Receive<br>
 
 
 
+TO DO
+1. set up PI to host network
+2. intgrate ML main and Flask server main
+3. Get live cone frames into server
+4. clean up GIT
+5. Bluetooth functionallity re configuring
+6. Linkedin video
+7. 
+
+
 **--------------------------------------------------------------------------------------------------------------------------<br>
 -----------------------------------------------------Funicular By-------------------------------------------------------<br>
 ----------------------------------------------------Hayden & Jesse----------------------------------------------------<br>
