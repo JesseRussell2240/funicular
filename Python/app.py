@@ -24,8 +24,8 @@ CORS(app)
 app.register_blueprint(control_routes, url_prefix='/control')  # Register with a prefix (optional)
 
 # Initialize the camera
-#picam2 = Picamera2()
-#picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+picam2 = Picamera2()
+picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
 
 # Global variables for sensor data
 gyro_data = {'gyro_x': 0.0, 'gyro_y': 0.0, 'gyro_z': 0.0}
@@ -388,12 +388,75 @@ def bluetooth():
     action = request.json.get('action', 'disable')
     bluetooth_enabled = (action == 'enable')
     status = "enabled" if bluetooth_enabled else "disabled"
-
+ 
     # Print button press to the console
     action_text = "Enable Bluetooth" if bluetooth_enabled else "Disable Bluetooth"
     print(f"[BLUETOOTH] Button pressed: {action_text}")
+ 
+    if bluetooth_enabled:
+        try:
+            import pygame
+            pygame.init()
+            pygame.joystick.init()
+ 
+            if pygame.joystick.get_count() == 0:
+                print("[BLUETOOTH] No controller detected.")
+                return jsonify({"status": "error", "message": "No controller detected"}), 400
+ 
+            controller = pygame.joystick.Joystick(0)
+            controller.init()
+ 
+            print("[BLUETOOTH] PS4 controller connected.")
+ 
+            running = True
+            while running and bluetooth_enabled:
+                pygame.event.pump()
+ 
+                # Left joystick for steering
+                left_x = controller.get_axis(0)
 
+                
+
+                # Determine direction and movement based on joystick and triggers
+                direction = "|"  # Default direction (Neutral)
+                pwm_percentage = 0
+                steering_angle = steering_center
+                
+                # Determine movement direction based on the joystick
+                if left_x <= -0.4:
+                    steering_angle = int(30 + (left_x * 30))
+                    steering_angle = max(7, min(53, steering_angle))  # Clamp between 7 and 53
+                elif left_x >= 0.4:
+                    steering_angle = int(30 + (left_x * 30))
+                    steering_angle = max(10, min(50, steering_angle))  # Clamp between 7 and 53
+
+                # Handle triggers for forward/backward movement
+                left_trigger = controller.get_axis(2)
+                right_trigger = controller.get_axis(5)
+
+                if left_trigger > 0:  # Forward movement
+                    pwm_percentage = int(60 + (left_trigger * 30))  # Forward speed calculation
+                    direction = "-"  # Forward direction
+                elif right_trigger > 0:  # Backward movement
+                    pwm_percentage = int(60 + (right_trigger * 30))  # Backward speed calculation
+                    direction = "+"  # Backward direction
+                else:  # No trigger pressed
+                    pwm_percentage = 0  # No movement
+                    direction = "|"  # Stopped
+
+                # Construct the transmit packet
+                packet = f"{direction} {pwm_percentage} {steering_angle}"
+                transmit(packet + '\n')
+                # Transmit the constructed packet
+                #print(f"[BLUETOOTH] Transmit Packet: {transmit_packet}")
+ 
+        except Exception as e:
+            print(f"[BLUETOOTH] Error: {str(e)}")
+            return jsonify({"status": "error", "message": str(e)}), 500
+ 
     return jsonify({"status": f"Bluetooth {status}"}), 200
+
+
 
 # Flask route to provide sensor data
 @app.route('/sensor_data')
